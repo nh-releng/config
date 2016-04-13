@@ -1,0 +1,17 @@
+{
+  "chef_type": "role",
+  "default_attributes": {},
+  "description": "This role will be used to deploy Actionable Event Gateway edge service on all environments.",
+  "env_run_lists": {},
+  "json_class": "Chef::Role",
+  "name": "ActionableEventGateway_CI",
+  "override_attributes": {},
+  "run_list": [
+    "recipe[Cygwin]",
+    "recipe[Zabbix]",
+    "recipe[Splunk]",
+    "recipe[NuGet]",
+    "recipe[ActionableEventGateway::Default]",
+    "recipe[7Zip]"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "chef_type": "data_bag_item",
+  "data_bag": "new_test_databag",
+  "json_class": "Chef::DataBagItem",
+  "name": "data_bag_item_new_test_databag_1",
+  "raw_data": {
+    "id": "1",
+    "new": "item"
+  }
+}

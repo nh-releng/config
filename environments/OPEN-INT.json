@@ -1,0 +1,2932 @@
+{
+  "chef_type": "environment",
+  "cookbook_versions": {
+    "ClaimSubmissionConnect": "= 0.112.0",
+    "ClaimSubmissionMessaging": "= 0.680.1",
+    "ClinicalDocumentUI": "= 1.28.3",
+    "Cygwin": "= 1.5.4",
+    "EligibilityBenefitsConnect": "= 1.34.9",
+    "EmpowerIDCustomization": "= 1.0.0",
+    "ExternalFrameworkMembaseIntegration": "= 1.2.3",
+    "ExternalFrameworkMembaseIntegration_2_2": "= 2.2.0",
+    "NaviNetAuthorizationsConnect": "= 0.199.1",
+    "NaviNetAuthorizationsService": "= 0.199.1",
+    "NaviNetClaimStatusInquiryUI": "= 1.26.3",
+    "NaviNetReferralsCommon": "= 1.7.7",
+    "TPAllPayerSharedServicesConfig": "= 1.7.12",
+    "TPAriesSharedServicesConfig": "= 1.1.0",
+    "UserProfileUI": "= 3.0.6",
+    "WebServiceGatewayUI": "= 1.2.9",
+    "role_OpenPortalUi": "= 1.4.0",
+    "role_OpenWebAppServer": "= 1.4.0"
+  },
+  "default_attributes": {
+    "ActionableEventGateway": {
+      "ActionableEventGateway": {
+        "force_reinstall": true
+      },
+      "Build": "3",
+      "audit": {
+        "broker_uri": "activemq:failover:(tcp://OIEVTBRKR01.qa.navinet.local:61616,tcp://OIEVTBRKR02.qa.navinet.local:61616)"
+      },
+      "cert_thumbprint": "2F13A0DA859845E8ABED1017D48BBD062CEF2DB1",
+      "endpointdatastore_sqlconnectionstring": "data source=QADBSQLCL01\\SQL2K1202;initial catalog=PartnerEndpointDB_OI;trusted_connection=true",
+      "host": {
+        "broker_uri": "activemq:failover:(tcp://OIEVTBRKR01.qa.navinet.local:61616,tcp://OIEVTBRKR02.qa.navinet.local:61616)",
+        "install_dir": "D:\\Navimedix\\ActionableEventGateway",
+        "windows_service_password": "18%vme*mz(yja)",
+        "windows_service_username": "QA.NAVINET.LOCAL\\SA-QL-AEF"
+      },
+      "http_request_timeout": "20000",
+      "version": "1.1.0"
+    },
+    "AuditEventStorage": {
+      "ClaimStatus": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:CLAIMSTATUS.AUDIT.DL.QUEUE",
+          "DefaultValues": {
+            "ErrorInd": "false"
+          },
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ApplicationContextId": "$.event.context.source.application_context_id",
+            "ErrorFaultString": "$.event.payload.claim_search_response_summary.error_code|$.event.payload.claim_search_response_summary.trading_partner_fault",
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "GroupNID": "$.event.payload.user.group_nid",
+            "OfficeNID": "$.event.payload.user.office_nid",
+            "PlanNID": "$.event.payload.payer.plan_nid",
+            "RelationshipToInsured": "$.event.payload.patient_search_parameters.relationship_to_insured",
+            "SearchType": "$.event.payload.patient_search_parameters.search_type",
+            "TxnName": "$.event.context.event_type",
+            "UserNID": "$.event.payload.user.nid"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {
+            "ErrorFaultType": {
+              "Generic": "$.event.payload.patient_search_result_summary.error_code",
+              "STC": "$.event.payload.claim_search_response_summary.error_code",
+              "TPFault": "$.event.payload.claim_search_response_summary.trading_partner_fault"
+            },
+            "ErrorInd": {
+              "true": "$.event.payload.patient_search_result_summary.error_code|$.event.payload.claim_search_response_summary.error_code|$.event.payload.claim_search_response_summary.trading_partner_fault"
+            }
+          },
+          "InputQueue": "activemq:queue:CLAIMSTATUS.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": 5,
+          "RedeliveryDelay": 1000,
+          "TargetTable": "tblOpenClaimStatusInquiry"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "claim_status.properties",
+        "enabled": "true"
+      },
+      "ClinicalGateway": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:CLINICALGATEWAY.AUDIT.DL.QUEUE",
+          "DefaultValues": {},
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ApplicationContextId": "$.event.context.source.application_id",
+            "DocumentCreatedStatus": "$.event.payload.document.status",
+            "DocumentExpiredNID": "$.event.payload.document_id",
+            "DocumentNID": "$.event.payload.document.id",
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "GroupNID": "$.event.payload.user.group_nid",
+            "OfficeNID": "$.event.payload.navinet_recipient_offices[*]|$.event.payload.user.office_nid",
+            "PatientMemberID": "$.event.payload.patient.member_id",
+            "PlanShortNameSender": "$.event.payload.origin.sender",
+            "PlanShortNameSponsor": "$.event.payload.origin.sponsor",
+            "TxnName": "$.event.context.event_type",
+            "UserNID": "$.event.payload.user.nid",
+            "UserName": "$.event.payload.origin.user",
+            "UserRoleID": "$.event.payload.user.role_id"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {},
+          "InputQueue": "activemq:queue:CLINICALGATEWAY.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": 5,
+          "RedeliveryDelay": 1000,
+          "TargetTable": "tblOpenClinicalGateway"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "clinical_gateway.properties",
+        "enabled": "true"
+      },
+      "EligibilityBenefits": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:ELIGIBILITYBENEFITS.AUDIT.DL.QUEUE",
+          "DefaultValues": {
+            "ErrorInd": "false"
+          },
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ApplicationContextId": "$.event.context.source.application_context_id",
+            "ErrorFaultString": "$.event.payload.patient_search_result_summary.aaa_response.[*].code|$.event.payload.patient_search_result_summary.error_description|$.event.payload.patient_search_result_summary.trading_partner_fault",
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "GroupNID": "$.event.payload.user.group_nid",
+            "OfficeNID": "$.event.payload.user.office_nid",
+            "PlanNID": "$.event.payload.payer.plan_nid",
+            "RelationshipToInsured": "$.event.payload.patient_search_parameters.relationship_to_insured",
+            "SearchType": "$.event.payload.patient_search_parameters.search_type",
+            "TxnName": "$.event.context.event_type",
+            "UserNID": "$.event.payload.user.nid",
+            "UserRoleID": "$.event.payload.user.role_id"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {
+            "ErrorFaultType": {
+              "AAA": "$.event.payload.patient_search_result_summary.aaa_response.[*].code",
+              "Generic": "$.event.payload.patient_search_result_summary.error_code",
+              "TPFault": "$.event.payload.patient_search_result_summary.trading_partner_fault"
+            },
+            "ErrorInd": {
+              "true": "$.event.payload.patient_search_result_summary.error_code|$.event.payload.patient_search_result_summary.aaa_response|$.event.payload.patient_search_result_summary.trading_partner_fault"
+            }
+          },
+          "InputQueue": "activemq:queue:ELIGIBILITYBENEFITS.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": "5",
+          "RedeliveryDelay": "1000",
+          "TargetTable": "tblOpenEligibilityBenefits"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "eligibility_benefits.properties",
+        "enabled": "true"
+      },
+      "NaviNetReferrals": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:NAVINETREFERRALS.AUDIT.DL.QUEUE",
+          "DefaultValues": {},
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ApplicationContextId": "$.event.context.source.application_id",
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "GroupNID": "$.event.payload.user.group_nid",
+            "OfficeNID": "$.event.payload.user.office_nid",
+            "PlanNID": "$.event.payload.payer.plan_nid",
+            "TxnName": "$.event.context.event_type",
+            "UserNID": "$.event.payload.user.nid",
+            "UserRoleID": "$.event.payload.user.role_id"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {},
+          "InputQueue": "activemq:queue:NAVINETREFERRALS.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": 5,
+          "RedeliveryDelay": 1000,
+          "TargetTable": "tblOpenReferrals"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "navinet_referrals.properties",
+        "enabled": "false"
+      },
+      "NetworkIntelligence": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:NETWORKINTELLIGENCE.AUDIT.DL.QUEUE",
+          "DefaultValues": {},
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ActionName": "$.event.payload.action_name",
+            "ApplicationContextId": "$.event.context.source.application_id",
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "Sponsor": "$.event.payload.sponsor",
+            "TxnName": "$.event.context.event_type"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {},
+          "InputQueue": "activemq:queue:NETWORKINTELLIGENCE.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": 5,
+          "RedeliveryDelay": 1000,
+          "TargetTable": "tblOpenNetworkIntelligence"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "network_intelligence.properties",
+        "enabled": "true"
+      },
+      "PlanManagement": {
+        "Properties": {
+          "DeadLetterQueue": "activemq:queue:PLANMANAGEMENT.AUDIT.INBOUND.DL.QUEUE",
+          "DefaultValues": {},
+          "DocumentColumnName": "EventDocument",
+          "ExtractFromBody": {
+            "ApplicationContextId": null,
+            "EventCreateDTM": "$.event.context.source.created_date",
+            "EventGroupingID": "$.event.context.identification.activity_id",
+            "EventID": "$.event.context.identification.event_id",
+            "GroupNID": "$.event.payload.user.group_nid",
+            "OfficeNID": "$.event.payload.user.office_nid",
+            "PlanNID": "$.event.payload.payer.plan_nid",
+            "TxnName": "$.event.context.event_type",
+            "UserNID": "$.event.payload.user.nid",
+            "UserRoleID": "$.event.payload.user.role_id"
+          },
+          "ExtractFromHeader": {},
+          "ExtractSetValue": {},
+          "InputQueue": "activemq:queue:PLANMANAGEMENT.AUDIT.INBOUND.QUEUE",
+          "MaximumRedeliveries": "5",
+          "RedeliveryDelay": "1000",
+          "TargetTable": "tblOpenPlanManagement"
+        },
+        "PropertiesDirectory": "/opt/apache-activemq-5.9.0/conf/navinet",
+        "PropertiesFileName": "plan_management.properties",
+        "enabled": "true"
+      }
+    },
+    "AuditReporting": {
+      "AdditionalHosts": "QAOPAUDIT02.TEST1.QA,QAOPAUDIT03.TEST1.QA2",
+      "Server": "QAOPAUDIT01.TEST1.QA"
+    },
+    "AuditReportingMessaging": {
+      "couchbase": {
+        "server": {
+          "password": "navimedix"
+        }
+      },
+      "environments": {
+        "OPENINT": {
+          "AdditionalHosts": "QAOPAUDIT01.TEST1.QA",
+          "Bucket": "OPENINT.AUDIT.REPORTING",
+          "BucketPassword": "navimedix",
+          "BucketSetupSettings": {
+            "allowedTimePeriodAbortOutside": "true",
+            "allowedTimePeriodFromHour": 0,
+            "allowedTimePeriodFromMinute": 0,
+            "allowedTimePeriodToHour": 0,
+            "allowedTimePeriodToMinute": 0,
+            "authType": "sasl",
+            "autoCompactionDefined": "false",
+            "databaseFragmentationThresholdPercentage": 0,
+            "databaseFragmentationThresholdSize": 0,
+            "flushEnabled": 0,
+            "memory_quota_mb": 150,
+            "name": "OPENINT.AUDIT.REPORTING",
+            "parallelDBAndViewCompaction": false,
+            "proxyPort": 11211,
+            "purgeInterval": 0,
+            "replicaIndex": 1,
+            "replicaNumber": 1,
+            "saslPassword": null,
+            "threadsNumber": 3,
+            "type": "couchbase",
+            "viewFragmentationThresholdPercentage": 0,
+            "viewFragmentationThresholdSize": 0
+          },
+          "DlQueue": "AUDIT.REPORTING.EVENTS.DL.QUEUE",
+          "InQueue": "AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+          "Server": "QAOPAUDIT01.TEST1.QA",
+          "concurrentConsumers": "10",
+          "persistTo": "0",
+          "redeliveries": "2",
+          "replicateTo": "0",
+          "routeid": "OPENINT.AUDIT.REPORTING"
+        }
+      },
+      "version": "1.3.0"
+    },
+    "AutomiseActions": {
+      "Build": "*"
+    },
+    "BatchProcessingService": {
+      "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
+      "AppPoolIdentity": "qa.navinet.local\\SA-QL-BatchProSvc",
+      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.qa;Initial Catalog=EventJournal;Integrated Security=true;",
+      "Build": "*",
+      "DefaultRetryCount": "3",
+      "Host": "api-oi-int.navinet.net",
+      "Port": "80",
+      "SchedulerApiUrl": "http://api-oi-int.navinet.net/v1/Scheduler",
+      "SqlDatabase": "BatchProcessingServiceDB_OI",
+      "SqlServerAddress": "QADBSQLCL01.TEST1.QA",
+      "UriScheme": "http"
+    },
+    "CORE_DB_NAME": "NaviNet",
+    "CORE_DB_SERVER": "10.39.20.41",
+    "CamelComponents": {
+      "Data": {
+        "BatchProcessingService": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "ClaimStatus": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "ClaimSubmission": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "0.680.1"
+        },
+        "ClinicalGateway": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "EligibilityBenefits": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "NaviNetAuthorizations": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "NaviNetReferrals": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "NetworkIntelligence": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "ObjectStorage": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "OpenAlerts": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "1.0.3"
+        },
+        "PlanManagement": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "Registration": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "UserProfile": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "DatabaseName": "RawAuditRepo",
+            "DatabaseServer": "BIDBEDW01.NAVIMEDIX.COM\\\\SQL2K1201",
+            "DatabaseUserName": "SA-NC-DBRKR"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "3.0.0"
+        }
+      },
+      "Event": {
+        "BatchProcessingService": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "ClaimSubmission": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+            "WebBrokerURL": "failover:(tcp://10.37.40.40:61616)?randomize=false"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "1.5.0"
+          },
+          "Version": "0.680.1"
+        },
+        "ClinicalGateway": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://10.37.45.40:61616,tcp://10.37.45.41:61616)?randomize=false",
+            "EventBrokerURL": "failover:(tcp://10.37.40.41:61616)?randomize=false",
+            "WebBrokerURL": "failover:(tcp://10.37.40.40:61616)?randomize=false",
+            "clinicalgateway.DocumentExchangeApi.BaseUrl": "http://api-oi-int.navinet.net/clinical/",
+            "clinicalgateway.DocumentProviderMapping.Database": "OpenINTClinicalGatewayDB",
+            "clinicalgateway.DocumentProviderMapping.DatabasePassword": "navimedix!",
+            "clinicalgateway.DocumentProviderMapping.DatabaseServerName": "QADBSQLCL01.test1.qa",
+            "clinicalgateway.DocumentProviderMapping.DatabaseUsername": "SQL-SA-INT-clinicmsg",
+            "clinicalgateway.DocumentProviderMapping.DirectoryServiceURI": "http://OIWBPDSSVC01.QA.NAVINET.LOCAL/api/directory/accounts/search",
+            "clinicalgateway.EventTransformation.SendDelay": "10000",
+            "clinicalgateway.UseMockServices": false
+          },
+          "RunAsUser": "camel",
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "1.5.0"
+          }
+        },
+        "EventRoutingEngine": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "Destinations": [
+              {
+                "Destination": "CLAIMSUBMISSION.EVENTS.INBOUND.QUEUE",
+                "DestinationAlias": "ClaimsSubmissionJmsInbound",
+                "DestinationBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+                "DestinationTTL": "0",
+                "TransportType": "JMS"
+              },
+              {
+                "DestinationsAlias": "EventAuditRepository",
+                "TransportType": "NULL"
+              }
+            ],
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+            "SubscriptionService.BaseUrl": "http://api-oi-int.navinet.net/v1/event-management",
+            "SubscriptionService.UseSubscriptionServiceMock": true
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0",
+            "Xms": "2g",
+            "Xmx": "2g"
+          },
+          "Version": "1.0.1"
+        },
+        "NetworkIntelligence": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.1"
+        },
+        "ObjectStorage": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        },
+        "OpenAlerts": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)"
+          },
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "1.5.0"
+          },
+          "Version": "1.0.0"
+        },
+        "PlanManagement": {
+          "Build": "SNAPSHOT",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616)?randomize=false",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)?randomize=false",
+            "WebBrokerURL": "failover:(tcp://10.37.40.40:61616)?randomize=false"
+          },
+          "RunAsUser": "camel",
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "1.5.0"
+          }
+        },
+        "UserProfile": {
+          "Build": "*",
+          "EnvironmentProperties": {
+            "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
+            "EventBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+            "WebBrokerURL": "failover:(tcp://10.37.40.40:61616)?randomize=false"
+          },
+          "Routes": "{\".*\":[\"eventbrkr:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE\",\"databrkr:USERPROFILE.AUDIT.INBOUND.QUEUE\"]}",
+          "Runtime": {
+            "CamelRouteContainerBuild": "*",
+            "CamelRouteContainerVersion": "2.0.0"
+          },
+          "Version": "2.0.0"
+        }
+      },
+      "LegacyEvents": {
+        "Build": "*",
+        "DataBag": {
+          "EncryptedItem": "RawLegacyMessageStorePwd",
+          "Name": "LegacyEventsMessaging"
+        },
+        "EnvironmentProperties": {
+          "ActiveMQBrokerURL": "failover:(tcp://OIIFLEGCYBRKR01.QA.NAVINET.LOCAL:61616)",
+          "DatabaseName": "RawLegacyMessageStoreDB_OI",
+          "DatabaseServer": "QADBSQLCL01.TEST1.qa\\\\SQL2K1202",
+          "DatabaseUserName": "SA-QL-LEGACY",
+          "DocumentColumnName": "Message",
+          "TargetTable": "tblRawLegacyMessage"
+        },
+        "Runtime": {
+          "CamelRouteContainerBuild": "*",
+          "CamelRouteContainerVersion": "2.0.0"
+        }
+      }
+    },
+    "CamelRouteContainer": {
+      "camelRouteContainerBuild": "*",
+      "camelRouteContainerVersion": "2.0.0"
+    },
+    "ClaimLogUI": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-CLUI",
+      "AppPoolIdentityPassword": "RA08LljRBa68lfs4",
+      "AutoStart": true,
+      "Build": "1",
+      "ClaimSubmissionServiceBaseUrl": "http://open-int-claimsubservice.qa.navinet.local",
+      "ClientValidationEnabled": true,
+      "ComponentUISelesteVersion": "2.11.0",
+      "DefaultLoggerLogLevel": "Info",
+      "DocumentExchangeServiceBaseUrl": "http://api-oi-int.navinet.net",
+      "JQueryPluginsVersion": "1.9.1",
+      "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/",
+      "PlanManagementServiceMasterConfigVersion": 2,
+      "PlanManagementServiceUiConfigVersion": 1,
+      "SplunkPort": 8089,
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\ClaimLogUI",
+      "UnobtrusiveJavaScriptEnabled": true,
+      "UseMockDocumentService": false,
+      "UseMockPlanManagementService": false
+    },
+    "ClaimStatusInquiryConnect": {
+      "Build": "5",
+      "ClaimStatusInquiryConnect": {
+        "force_reinstall": true
+      },
+      "ClaimStatusInquiryConnectExtensionsFolder": "D:\\Navimedix\\NaviNet\\ClaimStatusInquiry\\Connect"
+    },
+    "ClaimStatusInquiryUIConnect": {
+      "Build": "8",
+      "ClaimStatusInquiryUIConnect": {
+        "force_reinstall": true
+      },
+      "ClaimStatusInquiryUIConnectExtensionsFolder": "D:\\Navimedix\\NaviNet\\ClaimStatusInquiry\\UIConnect"
+    },
+    "ClaimStatusMessaging": {
+      "environments": {
+        "OPENINT": {
+          "EventRoutingDeadLetterQueueEndpoint": "activemq:CLAIMSTATUS.EVENTS.DL.QUEUE",
+          "EventRoutingFromEndpoint": "activemq:CLAIMSTATUS.EVENTS.OUTBOUND.QUEUE",
+          "EventRoutingGlobalEexceptionHandlerName": "OPENINT.CLAIMSTATUS.EVENTS.ROUTING.GLOBALEXCEPTIONHANDLER",
+          "EventRoutingRouteName": "OPENINT.CLAIMSTATUSMESSAGING.EVENTS.ROUTING",
+          "EventRoutingRouterNodeName": "OPENINT.CLAIMSTATUSMESSAGING.EVENTS.ROUTING.EVENTROUTER",
+          "EventRoutingUnrecoverableExceptionHandlerName": "OPENINT.CLAIMSTATUS.EVENTS.ROUTING.UNRECOVERABLEEXCEPTIONHANDLER",
+          "routingtable": {
+            "nmt:NaviNet.*": [
+              "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+              "databrkr:CLAIMSTATUS.AUDIT.INBOUND.QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "ClaimSubmissionConnect": {
+      "Build": "6",
+      "ClaimSubmissionConnect": {
+        "force_reinstall": "true"
+      },
+      "Connect_ExtensionsFolder": "D:\\NaviMedix\\NaviNet\\ClaimSubmissionService\\Connect"
+    },
+    "ClaimSubmissionService": {
+      "AcknowledgementProcessingApiUser": "asyedtest",
+      "AcknowledgementProcessingConnectConfigVersion": 1,
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-CSService",
+      "AppPoolIdentityPassword": "Qu@IWWTL8Cq@",
+      "ApplicationXri": "xri://@navinet.net/open/claim-submission/service",
+      "AutoStart": true,
+      "Build": "1",
+      "ClaimStatusInquiryServiceBaseUrl": "http://open-int-csiservice.qa.navinet.local/",
+      "ClaimSubmissionServiceDbName": "ClaimServiceDB_OI",
+      "ClaimSubmissionServiceDbServer": "qadbsqlcl01.test1.qa\\sql2k1202",
+      "ClaimSubmissionServiceHost": "open-int-claimsubservice.qa.navinet.local",
+      "ClaimSubmissionServiceHostProtocol": "http",
+      "Connect_ExtensionsFolder": "D:\\NaviMedix\\NaviNet\\ClaimSubmissionService\\Connect",
+      "DebugModeEnabled": true,
+      "DefaultLoggerLogLevel": "warn",
+      "DocumentExchangeServiceBaseUrl": "http://api-oi-int.navinet.net/",
+      "EdiLog_Folder": "\\Log",
+      "EventPublisher-Server": "OIEVTBRKR01.qa.navinet.local",
+      "EventPublisherEventJournalDbName": "EventJournal",
+      "EventPublisherEventJournalDbServer": "qadbsqlcl01.test1.qa\\sql2k1202",
+      "EventPublisher_ConnectionStringProperties_Hosts": "tcp://OIEVTBRKR01.qa.navinet.local:61616,tcp://OIEVTBRKR01.qa.navinet.local:61617",
+      "EventPublisher_ConnectionStringProperties_TransportTimeout": 3000,
+      "EventPublisher_Destination_ProducerTimeout": 5000,
+      "EventPublisher_Destination_SendMessageExpiryTime": 2500,
+      "EventPublisher_Destination_SendPath": "queue://CLAIMSUBMISSION.EVENTS.OUTBOUND.QUEUE",
+      "EventPublisher_Enable": true,
+      "MiniProfilerRequestLoggingEnabled": true,
+      "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/",
+      "PlanManagementServiceConnectConfigVersion": 1,
+      "PlanManagementServiceHost": "open-int-planmgmtservice.qa.navinet.local",
+      "PlanManagementServiceHostProtocol": "http",
+      "PlanManagementServiceServiceConfigVersion": 1,
+      "SearchRecordsPageSize": 12,
+      "SplunkPort": "8089",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory": "D:\\NaviMedix\\NaviNet\\ClaimSubmissionService",
+      "UseMockEventPublishingService": false,
+      "UseMockPlanManagementService": false
+    },
+    "ClaimSubmissionUI": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-CSUI",
+      "AppPoolIdentityPassword": "A*4&VIC$sCkP",
+      "AttachmentDocumentAjaxBaseUrl": "http://localhost/",
+      "AutoStart": true,
+      "Build": "1",
+      "ClaimSubmissionServiceApiVersion": 1,
+      "ClaimSubmissionServiceBaseUrl": "http://open-int-claimsubservice.qa.navinet.local",
+      "ClientValidationEnabled": "true",
+      "ComponentUISelesteVersion": "2.11.0",
+      "DebugModeEnabled": true,
+      "DefaultLoggerLogLevel": "Info",
+      "DirectoryServiceApiVersion": 1,
+      "DirectoryServiceBaseUrl": "http://OPEN-INT-DIRECTORYSSVC.QA.NAVINET.LOCAL/",
+      "DocumentExchangeServiceBaseUrl": "http://api-oi-int.navinet.net/",
+      "JQueryPluginsVersion": "1.9.1",
+      "PhysicalLayoutFile": "~/Views/Shared/_Layout.cshtml",
+      "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/",
+      "PlanManagementServiceMasterConfigVersion": 2,
+      "PlanManagementServiceUiConfigVersion": 1,
+      "SplunkPort": "8089",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "StandaloneModeEnabled": "false",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\ClaimSubmissionUI",
+      "UnobtrusiveJavaScriptEnabled": "true",
+      "UseMockDocumentService": false,
+      "UseMockPlanManagementService": "false",
+      "UseMockProviderService": "true",
+      "UseMockVocabularyService": "false",
+      "VocabularyServiceApiVersion": 1,
+      "VocabularyServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local"
+    },
+    "ClinicalDataService": {
+      "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
+      "AmqTransportTimeout": 0,
+      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournalDX_OI;Integrated Security=true;",
+      "Build": "*",
+      "CouchbaseServers": "http://orcouchcfg01.qa.navinet.local:8091/pools,http://orcouchcfg02.qa.navinet.local:8091/pools,http://orcouchcfg03.qa.navinet.local:8091/pools",
+      "Host": "api-oi.navinet.net",
+      "Port": 443,
+      "SearchResultLimit": 1500,
+      "SophosAddress": "virus-scanner.qa.navinet.local",
+      "SophosPort": 4010,
+      "SqlDatabase": "OpenINTClinicalGatewayDB",
+      "SqlServerAddress": "QADBSQLCL01.TEST1.QA\\SQL2K1202",
+      "SvcAccountUsername": "QA\\SA-QL-clinicdatasvr",
+      "UriScheme": "https",
+      "UseMockServices": "false"
+    },
+    "ClinicalDataServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-clinicdatasvr"
+    },
+    "ClinicalDocumentProcessingBatch": {
+      "environments": {
+        "OPENINT": {
+          "ArchiveRoot": "/OpenINT_ClinicalDocBatch/Archive",
+          "CleanupRouteFromCronExpression": "0+*+13+*+*+?",
+          "ClinicalGatewayUrl": "http://api-oi-int.navinet.net/clinical/documents/",
+          "FtpRoot": "/OpenINT_ClinicalDocBatch/FTP",
+          "ManifestTimeToLiveInDays": 1,
+          "envName": "OPENINT"
+        }
+      }
+    },
+    "ClinicalDocumentPurge": {
+      "Build": "*"
+    },
+    "ClinicalDocumentUI": {
+      "ActiveMQ_Hosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
+      "ActiveMQ_TransportTimeout": 0,
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-clinicdocui",
+      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournalDX_OI;Integrated Security=true;",
+      "Build": "*",
+      "Clinical_doc_service_host": "http://OIWBCLGWYAPI01.qa.navinet.local",
+      "DynamicAppPoolName": "ClinicalDocumentUIAppPool",
+      "Plan_management_service_host": "http://open-int-planmgmtservice.qa.navinet.local",
+      "UriScheme": "https",
+      "UseMockServices": "false"
+    },
+    "ClinicalDocumentUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-clinicdocui"
+    },
+    "ClinicalGateway": {
+      "Build": ""
+    },
+    "CmsContentService": {
+      "Build": "3",
+      "IdentityPassword": "1-I'e5peg}e{N$#:=l$;?wtAnK,fO%Z2:+AOF7-q2B2P6R3ihB|C#Spj\\+=G\"<j|",
+      "PoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-cmscontentsvc",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\CmsContent\\Service"
+    },
+    "CmsContentServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-cmscontentsvc"
+    },
+    "CmsContentUI": {
+      "AllPayerPlanCentralFeedCacheExpiryMin": 5,
+      "AllPayerPlanCentralFeedCacheFile": "allpayer-plan-central.xml",
+      "AllPayerPlanCentralFeedDomain": "http://stg.support.navinet.net",
+      "AllPayerPlanCentralFeedPath": "provider-offering/all-payer/feed",
+      "AllPayerSignupAccessControlRequired": true,
+      "AllPayerSignupFeedCacheExpiryMin": 5,
+      "AllPayerSignupFeedCacheFile": "provideroffering\\allpayersignup.xml",
+      "AllPayerSignupFeedDomain": "http://info.navinet.net/",
+      "AllPayerSignupFeedPath": "all-payer-access?utm_campaign=APP%20Launch&amp;utm_medium=Portal&amp;utm_source=My%20Health%20Plan%20Ad",
+      "AllPayerSignupWayFinderLabel": "AllPayer Signup",
+      "AppFileCmsNaviNetHomeContentKB": "C:\\NaviMedix\\CmsSharedResources\\kb-cms-navinethome-content.xml",
+      "Build": "14",
+      "CmsContentServiceBasePath": "/api/users/{0}/favorites",
+      "CmsContentServiceDomain": "http://open-int-cmscontentservice.qa.navinet.local",
+      "ContactUsPath": "SSOGateway/pingfederate/connection/SalesforcePortal?TargetResource=contactsupport",
+      "DrupalContentCacheExpirySeconds": 300,
+      "DrupalContentFileSystemBackupExpirySeconds": 300,
+      "DrupalContentFileSystemBackupPath": "D:\\NaviMedix\\NaviNet\\CmsContentUI\\App_Data",
+      "DrupalServiceConsumerKey": "Ld4wDC5x3fFWQidvXTsxFYUrBxBRNKGA",
+      "DrupalServiceConsumerSecret": "YVbUEKtm7zXT7ujS6x4ru7ghXbsWJCmH",
+      "DrupalServiceContentHomeDefaultUrl": "/rest/user_campaigns/retrieve_defaults/0",
+      "DrupalServiceContentHomeUrl": "/rest/user_campaigns/retrieve_rendered_full",
+      "DrupalServiceContentPlanCentralPreviewUrl": "/rest/plan_central/retrieve_draft",
+      "DrupalServiceContentPlanCentralUrl": "/rest/plan_central/retrieve",
+      "DrupalServiceDomain": "http://cms-staging.navimedix.com",
+      "DrupalServiceOAuthAccessTokenUrl": "/oauth/access_token",
+      "DrupalServiceOAuthAuthorizeUrl": "/oauth/authorize",
+      "DrupalServiceOAuthRequestTokenUrl": "/oauth/request_token",
+      "DrupalServiceTimeoutSeconds": 5,
+      "DynamicAppPoolName": "DefaultAppPool",
+      "FaqsFeedCacheExpiryMin": 5,
+      "FaqsFeedCacheFile": "faqs.xml",
+      "FaqsFeedDomain": "http://stg.support.navinet.net",
+      "FaqsFeedPath": "top-support-issues/feed",
+      "LegacyCarouselHeight": "500px",
+      "LegacyCarouselIntervalSeconds": 5,
+      "LegacyCarouselMaxItems": 9,
+      "LegacyCmsAdapterImplementation": "NaviNet.CmsContentUI.LegacyHomePageContentData.LegacyHomePageContentAdapter, NaviNet.CmsContentUI.LegacyHomePageContent ",
+      "MasterConfigVersion": 2,
+      "MedicareAccessControlRequired": true,
+      "MedicareFeedCacheExpiryMin": 5,
+      "MedicareFeedCacheFile": "provideroffering\\medicare.xml",
+      "MedicareFeedDomain": "http://stg.support.navinet.net",
+      "MedicareFeedPath": "provider-offering/medicare/feed",
+      "MedicareSignupAccessControlRequired": true,
+      "MedicareSignupFeedCacheExpiryMin": 5,
+      "MedicareSignupFeedCacheFile": "provideroffering\\medicare.xml",
+      "MedicareSignupFeedDomain": "http://info.navinet.net/",
+      "MedicareSignupFeedPath": "medicare-access",
+      "MedicareSignupWayFinderLabel": "Medicare",
+      "MedicareWayFinderLabel": "Medicare",
+      "PlanManagementServiceBasePath": "/api/management/plans/{planUrlIdentifier}",
+      "PlanManagementServiceDomain": "http://open-int-planmgmtservice.qa.navinet.local",
+      "PoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-cmscontentui",
+      "PortalUiServiceBasePath": "/portal-ui-service/menus/",
+      "PortalUiServiceDomain": "http://open-int-portaluiservice.qa.navinet.local",
+      "PrescriptionSavingsAccessControlRequired": "false",
+      "PrescriptionSavingsFeedCacheFile": "ProviderOffering\\prescription-savings.xml",
+      "PrescriptionSavingsFeedPath": "provider-offering/prescription-savings/feed",
+      "PrescriptionSavingsWayFinderLabel": "Prescription Savings",
+      "ProviderOfferingFeedCacheExpiryMin": "5",
+      "ProviderOfferingFeedDomain": "http://stg.support.navinet.net",
+      "RssFeedTimeOut": 5,
+      "SplunkPort": 514,
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "SsoGateWayDomain": "https://pitest.navimedix.com",
+      "StaticAppPoolName": "Static",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\CmsContentUI",
+      "VideoFeedCacheExpiryMin": 5,
+      "VideoFeedCacheFile": "video.xml",
+      "VideoFeedDomain": "http://stg.support.navinet.net",
+      "VideoFeedPath": "support-videos/feed"
+    },
+    "CmsContentUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-cmscontentui"
+    },
+    "ComponentUISeleste": {
+      "Build": "*"
+    },
+    "ContentManagementIntegration_4_1": {
+      "Build": "*",
+      "CMS_BASE_URL": "TBD"
+    },
+    "ContentManagementIntegration_5_0": {
+      "Build": "*",
+      "CMS_BASE_URL": "TBD"
+    },
+    "ContextualPortlet": {
+      "Build": "3",
+      "DynamicDomainName": "pitest.navimedix.com",
+      "StaticDomainName": "pitest-static.navimedix.com",
+      "TargetDirectoryPath_Resources": "%FEDERATION_RESOURCES_SHARE%\\Client\\NaviMedix\\NaviNet\\ContextualPortlet\\Static",
+      "TargetDirectoryPath_Static": "%FEDERATION_RESOURCES_SHARE%\\Client\\NaviMedix\\NaviNet\\ContextualPortlet\\Static"
+    },
+    "DocumentExchangeConverter": {
+      "DbConnectionString": "jdbc:sqlserver://QADBSQLCL01.TEST1.QA;databaseName=OpenINTClinicalgatewayDB;",
+      "EventRoutingDeadLetterQueueEndpoint": "DOCUMENTEXCHANGE.CONVERSION.DL.QUEUE",
+      "EventRoutingFromEndpoint": "DOCUMENTEXCHANGE.CONVERSION.INBOUND.QUEUE",
+      "SvcAccountUsername": "SQL-SA-INT-docexchangeconverter"
+    },
+    "Elasticsearch": {
+      "AdditionalProperties": {
+        "gateway.expected_nodes": 3
+      },
+      "ESHeapSize": "2g",
+      "clusterName": "ElasticsearchOI",
+      "discoveryZenMinimumMasterNodes": 2,
+      "gatewayRecoverAfterNodes": 1,
+      "repoPath": "/OpenINTElasticShare/repositories"
+    },
+    "EligibilityBenefitsConnect": {
+      "Build": "5",
+      "EligibilityBenefitsConnect": {
+        "force_reinstall": "true"
+      },
+      "EligibilityBenefitsConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\Connect"
+    },
+    "EligibilityBenefitsMessaging": {
+      "environments": {
+        "OPENINT": {
+          "EventRoutingDeadLetterQueueEndpoint": "activemq:ELIGIBILITYBENEFITS.EVENTS.DL.QUEUE",
+          "EventRoutingFromEndpoint": "activemq:ELIGIBILITYBENEFITS.EVENTS.OUTBOUND.QUEUE",
+          "EventRoutingRouteId": "OPENINT.ELIGIBILITYBENEFITS.EVENT.ROUTING",
+          "JSONTransformDeadLetterQueueEndpoint": "activemq:RULEPOINT.ELIGIBILITYBENEFITS.DL.QUEUE",
+          "JSONTransformFromEndpoint": "direct:RULEPOINT.ELIGIBILITYBENEFITS.TRANSFORM",
+          "JSONTransformRouteId": "OPENINT.NETWORKINTELLIGENCE.TRANSFORM.ROUTING",
+          "routingtable": {
+            "nmt:NaviNet/EligibilityBenefits/.*": [
+              "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+              "databrkr:ELIGIBILITYBENEFITS.AUDIT.INBOUND.QUEUE"
+            ],
+            "nmt:NaviNet/EligibilityBenefits/Select": [
+              "activemq:DOCUMENTEXCHANGE.EBSELECT.INBOUND.QUEUE",
+              "activemq:KAFKAMESSAGING.EVENTS.OUTBOUND.QUEUE"
+            ],
+            "nnt:network-intelligence/eligibility-benefits/select": [
+              "activemq:RULEPOINT.ELIGIBILITYBENEFITS.INBOUND.QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "EligibilityBenefitsUIConnect": {
+      "Build": "2",
+      "EligibilityBenefitsUIConnect": {
+        "force_reinstall": "false"
+      },
+      "EligibilityBenefitsUIConnectExtensionsFolder": "D:/NaviMedix/NaviNet/EligibilityBenefits/UIConnect"
+    },
+    "EmpowerIDCustomization": {
+      "Build": "*",
+      "ConnectorEnabled": "false",
+      "ConnectorInstanceName": "NaviNet-OpenInt",
+      "ConnectorRegistrationAssemblyName": "NaviNet.EmpowerId.Customization.CustomConnector",
+      "ConnectorRegistrationMethodName": "EnsureSystemRegistration",
+      "ConnectorRegistrationTypeName": "NaviNet.EmpowerId.Customization.CustomConnector.NaviNetConnectorRegistration",
+      "DBServiceConnectionString": "Data Source=AIDBCORE01.TEST1.QA;Initial Catalog=NaviNet;Integrated Security=SSPI",
+      "EmpowerIDDatabaseName": "EmpowerID_OI",
+      "EmpowerIDDatabaseServerName": "QADBSQL05.qa.navinet.local",
+      "HttpActivatorServiceUrl": "http://10.38.25.93/HttpActivator/ProcessRequest.aspx?ServiceId=NaviNetServerCNNXAPIServerImpl",
+      "NaviNetDBConnectionString": "\"Data Source=AIDBCORE01.TEST1.QA;Initial Catalog=NaviNet;Integrated Security=True\"",
+      "ScheduleInterval": 4,
+      "TargetDirectory_Dynamic": "D:\\Program Files\\TheDotNetFactory\\EmpowerID\\Programs",
+      "UseDatabaseServiceMock": false,
+      "UseNnxServiceMock": false
+    },
+    "ExternalFrameworkJQuery": {
+      "Build": ""
+    },
+    "ExternalFrameworkJQueryPlugins_1_7": {
+      "Build": "*"
+    },
+    "ExternalFrameworkJQueryPlugins_1_9_1": {
+      "Build": "*"
+    },
+    "ExternalFrameworkJQuery_1_7": {
+      "Build": "*"
+    },
+    "ExternalFrameworkJQuery_1_9_1": {
+      "Build": "*"
+    },
+    "ExternalFrameworkMembaseIntegration": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\ExternalFrameworks",
+      "Build": "9",
+      "DRIVE": "D:",
+      "INSTALL_MAIL_RECIPIENTS": "qa_exceptions@navinet.net",
+      "INSTALL_PROJECT_DRIVE": "D:",
+      "PROJECT_BIN_DIR": "%PROJECT_DIR%\\Bin",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "MembaseIntegration"
+    },
+    "ExternalFrameworkMembaseIntegration_2_0": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\ExternalFrameworks",
+      "Build": "5",
+      "DRIVE": "D:",
+      "INSTALL_MAIL_RECIPIENTS": "qa_exceptions@navinet.net",
+      "INSTALL_PROJECT_DRIVE": "D:",
+      "PROJECT_BIN_DIR": "%PROJECT_DIR%\\Bin",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "MembaseIntegration-2.0"
+    },
+    "ExternalFrameworkMembaseIntegration_2_1": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\ExternalFrameworks",
+      "Build": "7",
+      "DRIVE": "D:",
+      "INSTALL_MAIL_RECIPIENTS": "qa_exceptions@navinet.net",
+      "INSTALL_PROJECT_DRIVE": "D:",
+      "PROJECT_BIN_DIR": "%PROJECT_DIR%\\Bin",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "MembaseIntegration-2.0"
+    },
+    "ExternalFrameworkMembaseIntegration_2_2": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\ExternalFrameworks",
+      "Build": "10",
+      "DRIVE": "D:",
+      "INSTALL_MAIL_RECIPIENTS": "qa_exceptions@navinet.net",
+      "INSTALL_PROJECT_DRIVE": "%DRIVE%",
+      "PROJECT_BIN_DIR": "%PROJECT_DIR%\\Bin",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "MembaseIntegration-2.2"
+    },
+    "ExternalFrameworkMembaseOpsTools": {
+      "Build": "*",
+      "PROJECT_DIR": "C:\\NaviMedix\\Tools\\Membase\\membaseops"
+    },
+    "ExternalFrameworkRadControls": {
+      "Build": "*"
+    },
+    "FEDERATION_ENVIRONMENT_NAME": "OPEN-INT",
+    "FEDERATION_RESOURCES_SHARE": "\\\\frs.qa.navinet.local\\OIFR",
+    "FederationMembaseCacheMap": {
+      "Build": "*"
+    },
+    "FederationResources": {
+      "Build": "*",
+      "COOKIE_DOMAIN_IDENTIFIER": "pitest.navimedix.com",
+      "DYNAMIC_CONTENT_DOMAIN_IDENTIFIER": "pitest.navimedix.com",
+      "FEDERATION_RESOURCES_DFS_MEMBER_SERVER_REPLACE": "TBD",
+      "FEDERATION_RESOURCES_TEMPLATE_ENVIRONMENT": "OPEN-INT",
+      "HTML_DOCUMENT_DOMAIN": "pitest.navimedix.com",
+      "IIS_ANONYMOUS_USER_PWD_REPLACE": "NaviNet10",
+      "IIS_ANONYMOUS_USER_REPLACE": "Test1\\IisAnonymous",
+      "LocalPath": "D:\\FR",
+      "NAVIMEDIX_CONFIG_BASE_REPLACE": "%FEDERATION_ENVIRONMENT_NAME%\\FR\\Server\\NaviMedix\\FederationRuntime\\NaviMedixConfig",
+      "NAVIMEDIX_CONFIG_FILE_REPLACE": "NNPublicConfig.xml",
+      "NAVIMEDIX_HOME_DIRECTORY_REPLACE": "NaviMedix",
+      "NN_DB_PWD_REPLACE": "navimedix",
+      "NN_DB_UID_REPLACE": "rpa",
+      "NN_DIR": "%NN_DRIVE%%NN_WORKDIR%",
+      "NN_DRIVE": "D:",
+      "NN_DRIVE_REPLACE": "D:",
+      "NN_LOCATION": "%FEDERATION_ENVIRONMENT_NAME%",
+      "NN_MTS_PWD_REPLACE": "\"tuj>g?nfm#tld~P90\"",
+      "NN_MTS_USER_REPLACE": "qa.navinet.local\\rpa_user",
+      "NN_PUBLIC_MTS_PACKAGE_REPLACE": "NaviNet",
+      "NN_WORKDIR_REPLACE": "\\NaviNet",
+      "PING_FEDERATE_INBOUND_USER_NAME_REPLACE": "InboundTestUser",
+      "PING_FEDERATE_OUTBOUND_USER_NAME_REPLACE": "'notSet'",
+      "Permissions": "/GRANT:Everyone,FULL",
+      "STATIC_CONTENT_DOMAIN_IDENTIFIER": "pitest-static.navimedix.com",
+      "ShareName": "FR",
+      "USE_HTTPS_IDENTIFIER": "true",
+      "WEB_ANALYTICS_GOOGLE_SITE_IDENTIFIER": "UA-2668317-37",
+      "WEB_SOCKET_DOMAIN_IDENTIFIER": "ws.pitest.navimedix.com"
+    },
+    "FederationRuntime": {
+      "ACTIVE_HEALTH_RESOURCE_DIR": "TBD",
+      "AETNA_DATABASE_NAME": "PlanATNDB_P1",
+      "AETNA_DATABASE_SERVER_NAME": "AIDBMT02.TEST1.QA",
+      "AETNA_RESOURCE_DIR": "TBD",
+      "AHMERCY_DATABASE_NAME": "TBD",
+      "AHMERCY_DATABASE_SERVER_NAME": "TBD",
+      "AHM_DATABASE_NAME": "TBD",
+      "AHM_DATABASE_SERVER_NAME": "TBD",
+      "ALL_PAYER_DATABASE_NAME": "TBD",
+      "ALL_PAYER_DATABASE_SERVER_NAME": "TBD",
+      "AMERIHEALTH_RESOURCE_DIR": "TBD",
+      "BCBSNEBRASKA_DB_NAME": "PlanBCBSNebraskaDB",
+      "BCBSNEBRASKA_DB_SERVER": "AIDBMT41.TEST1.QA",
+      "Build": "149",
+      "CIGNA_DATABASE_NAME": "TBD",
+      "CIGNA_DATABASE_SERVER_NAME": "TBD",
+      "COMMON_RESOURCE_DIR": "%FEDERATION_RESOURCES_SHARE%\\NaviMedix\\Common\\1.0.0\\Runtime\\Shared",
+      "CORE_COMMON_SHARED_XSL_TEMPLATES_RESOURCE_DIR": "%FEDERATION_RESOURCES_SHARE%\\NaviMedix\\NaviNet\\Core\\Common\\Runtime\\Shared\\NaviNetCoreSharedXslTemplates",
+      "CORE_COMMON_XSL_TEMPLATES_RESOURCE_DIR": "%FEDERATION_RESOURCES_SHARE%\\NaviMedix\\NaviNet\\Core\\Common\\Runtime\\Shared\\XslTemplates",
+      "DATA_MAINTENANCE_RESOURCE_DIR": "%FEDERATION_RESOURCES_SHARE%\\NaviMedix\\NaviNet\\Core\\DataMaintenance\\Runtime",
+      "DOCSUB_DB_NAME": "TBD",
+      "DOCSUB_DB_SERVER": "TBD",
+      "DRIVE": "D:",
+      "ENTERPRISE_ERM_DATABASE_NAME": "TBD",
+      "ENTERPRISE_ERM_DATABASE_SERVER_NAME": "TBD",
+      "FEDERATION_RUNTIME_DIR": "%FEDERATION_RUNTIME_SERVER%\\FR\\Server\\NaviMedix\\FederationRuntime",
+      "FEDERATION_RUNTIME_SERVER": "TBD",
+      "GATEWAY_DB_NAME": "PlanGHPDB_P1",
+      "GATEWAY_DB_SERVER": "AIDBMT41.TEST1.QA",
+      "GEISINGER_DATABASE_NAME": "TBD",
+      "GEISINGER_DATABASE_SERVER_NAME": "TBD",
+      "GEISINGER_DB_NAME": "PlanGeisingerDB",
+      "GEISINGER_DB_SERVER": "AIDBMT41.TEST1.QA",
+      "HIGHMARK_DATABASE_NAME": "PlanHMDB",
+      "HIGHMARK_DATABASE_SERVER_NAME": "AIDBMT41.TEST1.QA",
+      "HORIZON_DATABASE_NAME": "TBD",
+      "HORIZON_DATABASE_SERVER_NAME": "TBD",
+      "IBC_DATABASE_NAME": "TBD",
+      "IBC_DATABASE_SERVER_NAME": "TBD",
+      "MULTI_TENANT_DATABASE_NAME": "TBD",
+      "MULTI_TENANT_DATABASE_SERVER_NAME": "TBD",
+      "NAVINETCOREANN_DATABASE_NAME": "NaviNetCoreAnn",
+      "NAVINETCOREANN_DATABASE_SERVER_NAME": "TBD",
+      "NAVINETCORECLONE_DATABASE_NAME": "%NAVINETCORE_DATABASE_NAME%",
+      "NAVINETCORECLONE_DATABASE_SERVER_NAME": "%NAVINETCORE_DATABASE_SERVER_NAME%",
+      "NAVINETCORE_DATABASE_NAME": "NaviNet",
+      "NAVINETCORE_DATABASE_SERVER_NAME": "AIDBCORE01.TEST1.QA",
+      "NAVINET_ALERTS_DATABASE_NAME": "NaviNetAlerts",
+      "NAVINET_ALERTS_DATABASE_SERVER_NAME": "AIDBCORE01.TEST1.QA",
+      "NAVINET_HOME_UI_RESOURCE_DIR": "%FEDERATION_RESOURCES_SHARE%\\NaviMedix\\NaviNet\\Home\\UI\\Runtime\\Shared",
+      "NAVINET_USERMESSAGING_DATABASE_NAME": "NNUserMessaging",
+      "NAVINET_USERMESSAGING_DATABASE_SERVER_NAME": "TBD",
+      "NOTIFICATION_DATABASE_NAME": "NotificationService",
+      "NOTIFICATION_DATABASE_SERVER_NAME": "AIDBMT41.TEST1.QA",
+      "OLAP_EVENT_DATABASE_NAME": "TBD",
+      "OLAP_EVENT_DATABASE_SERVER_NAME": "TBD",
+      "PORTAL_DATABASE_NAME": "Portal",
+      "PORTAL_DATABASE_SERVER_NAME": "AIDBCORE01.TEST1.QA",
+      "QUALCARE_DB_NAME": "PlanQualCareDB",
+      "QUALCARE_DB_SERVER": "AIDBMT41.TEST1.QA",
+      "RELAYHEALTH_DATABASE_NAME": "TBD",
+      "RELAYHEALTH_DATABASE_SERVER_NAME": "TBD",
+      "SPLUNK_SERVER_ADDRESS": "10.39.1.16",
+      "TPBASE_DATABASE_NAME": "TBD",
+      "TPBASE_DATABASE_SERVER_NAME": "TBD",
+      "TPBCBSA_GATEWAY_DB_NAME": "TBD",
+      "TPBCBSA_GATEWAY_DB_SERVER": "TBD",
+      "TPEXCHANGE_2_0_RESOURCE_DIR": "TBD",
+      "TPKERNEL_2_0_RESOURCE_DIR": "TBD",
+      "UNITEDGROUP_DATABASE_NAME": "TBD",
+      "UNITEDGROUP_DATABASE_SERVER_NAME": "TBD",
+      "UPDATE_XML_FILE_LOCATION": "TBD",
+      "UPDATE_XML_RESOURCE": {
+        "ClientConfiguration": {
+          "AccessControlCapabilities": {
+            "Server1": "AICA11.test1.qa",
+            "Server2": "delete",
+            "Server3": "delete"
+          },
+          "NHibernateOrgEntities": {
+            "Server1": "AICA11.test1.qa",
+            "Server2": "delete",
+            "Server3": "delete"
+          },
+          "NaviNetSessionCache": {
+            "Server1": "AICA11.test1.qa",
+            "Server2": "delete",
+            "Server3": "delete"
+          },
+          "SessionManager": {
+            "Server1": "AICA11.test1.qa",
+            "Server2": "delete",
+            "Server3": "delete"
+          },
+          "delete": [
+            "UnitTestCache",
+            "UnitTestL1Cache",
+            "UnitTestL2Cache"
+          ]
+        },
+        "Couchbase": {
+          "BucketPassword": "navimedix",
+          "Password": "navimedix",
+          "Servers": {
+            "Server1": "http://10.39.20.53:8091/pools",
+            "Server2": "http://10.39.20.54:8091/pools",
+            "Server3": "http://10.39.20.54:8091/pools"
+          },
+          "UserName": "Administrator"
+        },
+        "ProfileCacheRegistry": {
+          "AccessControlCapabilitiesApps": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\CacheProviderMap\\profile-acc-app-cache-map.xml",
+          "NHibernateOrgEntitiesCache": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\CacheProviderMap\\\\profile-orgentities-cache-map.xml",
+          "NaviNetGen1SessionCache": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\CacheProviderMap\\profile-gen1session-cache-map.xml",
+          "SessionManagerCache": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\CacheProviderMap\\profile-gen2session-cache-map.xml",
+          "TempMenuCache": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\CacheProviderMap\\profile-temp-menu-cache-map.xml"
+        },
+        "ProfileServiceRegistry": {
+          "ActiveHealthCc": {
+            "BindingList": {
+              "Server1": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server2": {
+                "BindingRatio": "2",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server3": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server4": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server5": {
+                "BindingRatio": "2",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\ActiveHealthRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              }
+            }
+          },
+          "Aetna": {
+            "BindingList": {
+              "Server1": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server2": {
+                "BindingRatio": "2",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server3": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server4": {
+                "BindingRatio": "2",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              },
+              "Server5": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAPATN41.TEST1.QA\\private$\\AetnaRequest",
+                "RemoteExchangeServerName": "AIAPATN41.TEST1.QA"
+              }
+            }
+          },
+          "Alerts": {
+            "BindingList": {
+              "Server1": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsreply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsrequest",
+                "RemoteExchangeServerName": "AIAP43.TEST1.QA"
+              },
+              "Server2": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsreply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsrequest",
+                "RemoteExchangeServerName": "AIAP43.TEST1.QA"
+              },
+              "Server3": {
+                "BindingEnabled": "false",
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsreply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIAP43.TEST1.QA\\private$\\navinetalertsrequest",
+                "RemoteExchangeServerName": "AIAP43.TEST1.QA"
+              }
+            }
+          },
+          "AmeriHealth": {
+            "BindingList": {
+              "Server1": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthRequest",
+                "RemoteExchangeServerName": "AIWBAHMERCY02.TEST1.QA"
+              },
+              "Server2": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthRequest",
+                "RemoteExchangeServerName": "AIWBAHMERCY02.TEST1.QA"
+              },
+              "Server3": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthRequest",
+                "RemoteExchangeServerName": "AIWBAHMERCY02.TEST1.QA"
+              },
+              "Server4": {
+                "BindingRatio": "5",
+                "MsmqReceivePath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthReply",
+                "MsmqSendPath": "FORMATNAME:DIRECT=OS:AIWBAHMERCY02.TEST1.QA\\private$\\AmeriHealthRequest",
+                "RemoteExchangeServerName": "AIWBAHMERCY02.TEST1.QA"
+              }
+            }
+          },
+          "NaviNetCoreComponentCommand": {
+            "Resources": {
+              "Server1": "AIAP43.test1.qa",
+              "Server2": "AIAP43.test1.qa"
+            }
+          }
+        }
+      },
+      "VIRGINIA_PREMIER_DATABASE_NAME": "TBD",
+      "VIRGINIA_PREMIER_DATABASE_SERVER_NAME": "TBD",
+      "X12GATEWAY_RESOURCE_DIR": "TBD"
+    },
+    "KafkaMessaging": {
+      "Runtime": {
+        "Xmx": "3g"
+      },
+      "env_vars": {
+        "ActiveMQBrokerURL": "failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+        "KafkaUrl": "REDTRD27KFKR01.research.navinet.local:9092",
+        "Zookeeper": "REDTRD27ZK01.research.navinet.local"
+      }
+    },
+    "NGinX": {
+      "target_url": "http://api-oi-int.navinet.net"
+    },
+    "NN_DRIVE": "D:",
+    "NN_MTS_PWD": "tuj>g?nfm#tld~P90",
+    "NN_MTS_USER": "qa.navinet.local\\rpa_user",
+    "NaviNetAccessControl_4_1": {
+      "Build": "*"
+    },
+    "NaviNetAccessControl_5_0": {
+      "Build": "*"
+    },
+    "NaviNetAlertsService": {
+      "BASE_DIR": "",
+      "Build": "",
+      "DRIVE": "",
+      "LOG_DIR": "",
+      "NAVIMEDIX_HOME": "",
+      "NNA_APP_PROFILE_LOGGER_ENABLED": "",
+      "NNA_DB_NAME": "",
+      "NNA_DB_SERVER": "",
+      "NNA_DB_SKIP_INSTALL": "",
+      "NNA_DIR_ASSEMBLYLOAD_REL": "",
+      "NNA_DIR_FEDERATIONRUNTIME": "",
+      "NNA_DIR_LOG_PATH": "",
+      "NNA_FAILURE_EMAILRECIPIENT": "",
+      "NNA_FEDERATIONRUNTIME_SERVER": "",
+      "NNA_FUNNEL_QUEUE": "",
+      "NNA_LISTENER_THREADS": "",
+      "NNA_NN_AUDITING_EVENTS_DIR_RUNTIME": "",
+      "NNA_SCRIPTS_DIR": "",
+      "NNA_SMTP_ADDRESS": "",
+      "NNA_SUCCESS_EMAILRECIPIENT": "",
+      "NNM_DB_NAME": "",
+      "NNM_DB_SERVER": "",
+      "NN_DB": "",
+      "NN_DB_SERVER": "",
+      "PROFILE_RESOURCE_SqlReceiveDatabase": "",
+      "PROFILE_RESOURCE_SqlReceiveServer": "",
+      "PROFILE_RESOURCE_SqlSendDatabase": "",
+      "PROFILE_RESOURCE_SqlSendServer": "",
+      "PROJECT_DIR": "",
+      "PROJECT_DIR_NAME": "",
+      "PROJECT_NAME": "",
+      "PROJECT_RUNTIME_DIR": "",
+      "WEBSERVICE_URL": ""
+    },
+    "NaviNetAuthenticationService": {
+      "BASE_DIR": "",
+      "Build": "",
+      "DRIVE": "",
+      "NNAUTHSERVICE_DIR": "",
+      "NNAUTHSERVICE_DIR_FEDERATION_RUNTIME": "",
+      "NNAUTHSERVICE_DIR_LOG": "",
+      "NNAUTHSERVICE_DIR_RUNTIME": "",
+      "NNAUTHSERVICE_ERROR_EMAILRECIPIENT": "",
+      "NNAUTHSERVICE_SMTP_ADDRESS": ""
+    },
+    "NaviNetAuthenticationUI": {
+      "BASE_DIR": "",
+      "Build": "",
+      "DISABLE_SIGNIN_PROCESS_COMPLETE": "",
+      "DRIVE": "",
+      "ENABLE_GEN2_PILOT": "",
+      "LEGACY_VERSION_ACTIVE": "",
+      "LOGIN_PAGE_RSS_FEED_URL": "",
+      "MAIN_ASPX_URL": "",
+      "NNAUTHUI_DIR": "",
+      "NNAUTHUI_DIR_FEDERATION_RUNTIME": "",
+      "NNAUTHUI_DIR_LOG": "",
+      "NNAUTHUI_DIR_RUNTIME": "",
+      "NNAUTHUI_DIR_SCRIPTS": "",
+      "NNAUTHUI_ENROLL_URL": "",
+      "NNAUTHUI_ERROR_EMAILRECIPIENT": "",
+      "NNAUTHUI_FORMS_AUTH_DEFAULT_URL": "",
+      "NNAUTHUI_LOGIN_TROUBLESHOOTING": "",
+      "NNAUTHUI_LOGIN_TROUBLESHOOTING_SECURITYOFFICER": "",
+      "NNAUTHUI_SMTP_ADDRESS": "",
+      "NNAUTHUI_SSO_CONNECTION_ID_MAP": "",
+      "NNAUTHUI_WEBCONFIG_COOKIES_SSL": "",
+      "NNAUTHUI_WEB_RELATIVE_DIR": "",
+      "application_pool_name": "",
+      "application_pool_required": "",
+      "application_pool_username": "",
+      "application_pool_username_password": "",
+      "fully_qualified_application_name": ""
+    },
+    "NaviNetAuthorizationsConnect": {
+      "Build": "*",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Authorizations\\Connect"
+    },
+    "NaviNetAuthorizationsConnect_Aries": {
+      "AuthorizationsSimEndpoint": "http://10.38.25.71/AuthorizationsSim/SoapHttpSim.aspx",
+      "Build": "*",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Authorizations\\Connect"
+    },
+    "NaviNetAuthorizationsConnect_Common": {
+      "Build": "*",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Authorizations\\Connect"
+    },
+    "NaviNetAuthorizationsMessaging": {
+      "environments": {
+        "OPENINT": {
+          "EventRoutingDeadLetterQueueEndpoint": "activemq:AUTHORIZATIONS.EVENTS.DL.QUEUE",
+          "EventRoutingFromEndpoint": "activemq:AUTHORIZATIONS.EVENTS.OUTBOUND.QUEUE",
+          "EventRoutingGlobalEexceptionHandlerName": "OPENINT.AUTHORIZATIONS.EVENTS.ROUTING.GLOBALEXCEPTIONHANDLER",
+          "EventRoutingRouteName": "OPENINT.NAVINETAUTHORIZATIONSMESSAGING.EVENTS.ROUTING",
+          "EventRoutingRouterNodeName": "OPENINT.NAVINETAUTHORIZATIONSMESSAGING.EVENTS.ROUTING.EVENTROUTER",
+          "EventRoutingUnrecoverableExceptionHandlerName": "OPENINT.AUTHORIZATIONS.EVENTS.ROUTING.UNRECOVERABLEEXCEPTIONHANDLER",
+          "routingtable": {
+            "nnt:authorizations.*": [
+              "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+              "databrkr:NAVINETAUTHORIZATIONS.AUDIT.INBOUND.QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "NaviNetAuthorizationsService": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-AUTHSVC",
+      "AppPoolIdentityPassword": "06tl%j8&r4cq)",
+      "AuthorizationEventApiUrl": "http://10.38.25.71/api/authorizations/plans/{planShortName}/events/{eventType}",
+      "AuthorizationProviderApiUrl": "http://10.38.25.71/api/authorizations/providers/billing/plans/{planShortName}/offices",
+      "AuthorizationsSimEndpoint": "http://10.38.25.71/AuthorizationsSim/SoapHttpSim.aspx",
+      "Build": "*",
+      "ConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\Authorizations\\Connect",
+      "DBDatabase": "NavinetAuthorizationsDB_OI",
+      "DBServer": "QADBSQLCL01.TEST1.QA",
+      "DebugModeEnabled": "false",
+      "DefaultConfigExpireTimeLength": 1,
+      "DefaultLoggerLogLevel": "Debug",
+      "DirectoryServiceBaseUrl": "http://10.38.25.71/api/authorizations/directory/",
+      "DynamicAppPoolName": "AuthorizationsService",
+      "EdiTracing": true,
+      "EventPublishingEnabled": false,
+      "LogToFileSystem": false,
+      "NotificationEventConnectionUri": "activemq:failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+      "NotificationEventJournalDBConnectionString": "Data Source=QADBSQLCL01.TEST1.qa;Initial Catalog=EventJournalAuthorizations_OI;Integrated Security=true;",
+      "PlanManagementConfigUrl": "/products/authorizations/configurations/service",
+      "PlanManagementPlanUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/authorizations/management/plans/{planShortName}/products/authorizations/configurations/service",
+      "ReferenceNumberApiUrl": "http://10.38.25.71/api/authorizations/plans/{planShortName}/reference-numbers",
+      "SplunkPort": "514",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\Authorizations\\Service",
+      "TraceLogFolder": "D:\\NaviMedix\\NaviNet\\Authorizations\\Service\\Log",
+      "VocabulariesServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local/vocabularies"
+    },
+    "NaviNetAuthorizationsServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-AUTHSVC"
+    },
+    "NaviNetAuthorizationsUI": {
+      "ApiBaseUrl": "http://OIWBREFSVC01.QA.NAVINET.LOCAL/api/authorizations/",
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-AUTHUI",
+      "AppPoolIdentityPassword": "ax!j1m%gvx*xk",
+      "AutoStart": "true",
+      "Build": "*",
+      "CustomErrorsMode": "On",
+      "DebugModeEnabled": "false",
+      "DefaultConfigExpireTimeLength": 1,
+      "DefaultLoggerLogLevel": "Debug",
+      "DirectoryServiceBaseUrl": "http://OPEN-INT-DIRECTORYSSVC.QA.NAVINET.LOCAL/api/directory/",
+      "DynamicAppPoolName": "AuthorizationsUI",
+      "EligibilityBenefitsSearchUrl": "/eligibility-benefits/{planShortName}/search",
+      "EnvironmentBaseUrl": "https://pitest.navimedix.com",
+      "LogToFileSystem": false,
+      "MenuServiceUrl": "http://open-int-portaluiservice.qa.navinet.local/portal-ui-service/menus/",
+      "MiniProfilerDisplayOnUi": false,
+      "MiniProfilerRequestLoggingEnabled": false,
+      "MiniProfilerSplunkServer": "qaifsplunk02.test1.qa",
+      "PlanManagementConfigUrl": "/products/authorizations/configurations/ui",
+      "PlanManagementPlanUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/authorizations/management/plans/{planShortName}/products/authorizations/configurations/ui",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\Authorizations\\UI",
+      "TraceLogFolder": "D:\\NaviMedix\\NaviNet\\Authorizations\\UI\\Log",
+      "VocabulariesServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local/vocabularies"
+    },
+    "NaviNetAuthorizationsUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-AUTHUI"
+    },
+    "NaviNetCacheIntegrationService": {
+      "Build": "",
+      "LOG_DIR": "",
+      "NAVIMEDIX_HOME_DIRECTORY": "",
+      "NNM_APP_PROFILE_LOGGER_ENABLED": "",
+      "NNM_DIR": "",
+      "NNM_DIR_ASSEMBLYLOAD_REL": "",
+      "NNM_DIR_LOG": "",
+      "NNM_DIR_LOG_PATH": "",
+      "NNM_DIR_NODRIVE": "",
+      "NNM_DIR_RUNTIME": "",
+      "NNM_DIR_TEMP": "",
+      "NNM_FAILURE_EMAILRECIPIENT": "",
+      "NNM_FEDERATIONRUNTIME_SERVER": "",
+      "NNM_SMTP_ADDRESS": "",
+      "NNM_SUCCESS_EMAILRECIPIENT": "",
+      "NN_DIR": "",
+      "NN_DRIVE": "",
+      "NN_LOCATION": "",
+      "NN_WORKDIR": ""
+    },
+    "NaviNetClaimStatusInquiryService": {
+      "Build": "2",
+      "CompilationDebugModeEnabled": "false",
+      "CustomErrorsMode": "on",
+      "NNCSI_NOTIFICATION_EVENT_JOURNAL_DATABASE": "EventJournal",
+      "NNCSI_NOTIFICATION_EVENT_JOURNAL_HOSTNAME": "QADBSQLCL01.TEST1.qa",
+      "NNCSI_NOTIFICATION_NETINTEL_BROKER_URI": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616,tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_CONTENT_TYPE": "application/json",
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_IGNORE": false,
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_MESSAGE_DELIVERY_MODE": "Persistent",
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_MESSAGE_EXPIRY_TIME": 0,
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_MESSAGE_PRIORITY": "Low",
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_NAME": "CSIEventNotification",
+      "NNCSI_NOTIFICATION_NETINTEL_SEND_QUEUE": "queue://CLAIMSTATUS.EVENTS.OUTBOUND.QUEUE",
+      "NNCSI_NOTIFICATION_PRODUCER_TIMEOUT": 5000,
+      "NNCSI_NOTIFICATION_TRANSPORT_TIMEOUT": 5000,
+      "NNCSI_PLANMANAGEMENT_SERVICE_DOMAIN": "http://open-int-planmgmtservice.qa.navinet.local",
+      "NNCSI_SERVICE_APP_POOL_PWD": "|noFZ_SJF0nNfD?#Aa+0mk?u",
+      "NNCSI_SERVICE_APP_POOL_USER": "SA-QL-CSIService",
+      "NNCSI_SHAREDSERVICESCONFIG_XML_ENABLED": "false",
+      "NNCSI_SPLUNK_PORT": 514,
+      "NNCSI_SPLUNK_SERVER": "qaifsplunk02.test1.qa",
+      "NNCSI_USE_MOCK_PLANMANAGEMENTSERVICE": "false",
+      "NNCSI_WEB_DEBUG_COMPILATION": "false",
+      "NNCSI_WEB_DIR": "Web",
+      "NNCSI_WEB_INCLUDE_EXCEPTION_DETAIL_IN_FAULTS": "false",
+      "PLAN_MGNT_MASTER_CONFIG_URL": "/api/management/plans/{planShortName}",
+      "PLAN_MGNT_MASTER_CONFIG_VERSION": "2",
+      "PLAN_MGNT_SERVICE_CONFIG_URL": "/api/management/plans/{planShortName}/products/claim-status-inquiry/configurations/service",
+      "PLAN_MGNT_SERVICE_CONFIG_VERSION": "2",
+      "ServiceBehaviorsHttpGetEnabled": "false",
+      "ServiceBehaviorsIncludeExceptionDetailInFaults": "false",
+      "TargetDirectory": "D:\\NaviMedix\\NaviNet\\ClaimStatusInquiry\\Service"
+    },
+    "NaviNetClaimStatusInquiryServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-CSIService"
+    },
+    "NaviNetClaimStatusInquiryUI": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\NaviNet\\ClaimStatusInquiry",
+      "Build": "4",
+      "DOCUMENT_EXCHANGE_URL": "http://api-oi-int.navinet.net/document-exchange/documents",
+      "DRIVE": "D:",
+      "NNCSI_API_CLAIMDETAIL_URL": "http://open-int-csiservice.qa.navinet.local/claim-status-inquiry-service/detail",
+      "NNCSI_API_SEARCH_URL": "http://open-int-csiservice.qa.navinet.local/claim-status-inquiry-service/search",
+      "NNCSI_CONNECT_EXTENSIONS_FOLDER": "D:\\NaviMedix\\NaviNet\\ClaimStatusInquiry\\UIConnect",
+      "NNCSI_CSI_SERVICE_TRACE_LOGGING_ENABLED": "false",
+      "NNCSI_CSI_SERVICE_TYPE": "Types.TypeCSIService",
+      "NNCSI_CSI_SERVICE_URL": "http://open-int-csiservice.qa.navinet.local/claim-status-inquiry-service/ClaimStatusInquiryService.xamlx",
+      "NNCSI_DIR": "%BASE_DIR%\\UI",
+      "NNCSI_DIR_FEDERATION_RUNTIME": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\FederationRuntime",
+      "NNCSI_DIR_LOG": "%NNCSI_DIR%\\Log",
+      "NNCSI_DIR_RUNTIME": "%NNCSI_DIR%\\Runtime",
+      "NNCSI_DIR_SCRIPTS": "%NNCSI_DIR%\\Scripts",
+      "NNCSI_DIR_WEB": "%NNCSI_DIR%\\Web",
+      "NNCSI_EVENTS_CUSTOM_CONTENT_SERVED_URL": "http://open-int-csiservice.qa.navinet.local/claim-status-inquiry-service/events/custom-content-served",
+      "NNCSI_EVENT_PUBLISHER_SERVICE_TYPE": "Types.TypeEventPublisherService",
+      "NNCSI_MENU_SERVICE_URL": "http://open-int-portaluiservice.qa.navinet.local/portal-ui-service/menus/",
+      "NNCSI_PROVIDER_SERVICE": "ProviderServices.SOAP",
+      "NNCSI_PROVIDER_SERVICE_TRACE_LOGGING_ENABLED": "true",
+      "NNCSI_PROVIDER_SERVICE_URL": "http://open-int-providerservice.qa.navinet.local/provider-service/providerservice.xamlx",
+      "NNCSI_SHAREDSERVICESCONFIG_XML_ENABLED": "false",
+      "NNCSI_UI_APP_POOL_PWD": "GBKX7pMPFdOcem9L",
+      "NNCSI_UI_APP_POOL_USER": "SA-QL-CSIUI",
+      "NNCSI_USE_MOCK_PLANMANAGEMENTSERVICE": "false",
+      "NNCSUI_IS_CLAIM_ADJUSTABLE_LINK_URL": "http://localhost/claims/submission/{planShortName}/is-claim-available",
+      "NNCS_DOCUMENTS_DELIVERY_URL": "http://open-int-claimsubservice.qa.navinet.local/api/claims/submission/professional/plans/{planShortName}/claims/0/documents/deliver",
+      "PLAN_MGNT_CONNECT_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}/products/claim-status-inquiry/configurations/ui-connect",
+      "PLAN_MGNT_CONNECT_CONFIG_VERSION": "1",
+      "PLAN_MGNT_MASTER_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "PLAN_MGNT_MASTER_CONFIG_VERSION": "2",
+      "PLAN_MGNT_UI_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}/products/claim-status-inquiry/configurations/ui",
+      "PLAN_MGNT_UI_CONFIG_VERSION": "2"
+    },
+    "NaviNetClaimStatusInquiryUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-CSIUI"
+    },
+    "NaviNetCoreIntegrationService": {
+      "Build": "18",
+      "NNM_DIR": "%NN_DRIVE%%NNM_DIR_NODRIVE%",
+      "NNM_DIR_LOG": "%NNM_DIR_NODRIVE%\\Log",
+      "NNM_DIR_LOG_PATH": "%NN_DRIVE%%NNM_DIR_LOG%",
+      "NNM_DIR_NODRIVE": "%NN_WORKDIR%\\CoreIntegrationService",
+      "NNM_DIR_RUNTIME": "%NNM_DIR%\\Runtime",
+      "NN_DRIVE": "D:",
+      "NN_LOCATION": "OPEN-INT",
+      "NN_WORKDIR": "NaviMedix\\NaviNet"
+    },
+    "NaviNetCoreMasterPages_5_0": {
+      "Build": "*"
+    },
+    "NaviNetCoreMvcLayout_5_0": {
+      "Build": "*"
+    },
+    "NaviNetCoreNaviNetPublic": {
+      "BASE_DIR": "%DRIVE%\\\\NaviMedix",
+      "Build": "*",
+      "DRIVE": "d:",
+      "LOG_DIR": "%BASE_DIR%\\LOG",
+      "NAVIMEDIX_CONFIG_BASE": "\\\\frs.qa.navinet.local\\OIFR\\Server\\NaviMedix\\FederationRuntime",
+      "NN_PUBLIC_MTS_PACKAGE": "NaviNet",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "NaviNetPublic",
+      "PROJECT_RUNTIME_DIR": "%PROJECT_DIR%\\Runtime"
+    },
+    "NaviNetCoreUI": {
+      "Build": "13",
+      "IdentityPassword": "hU9rR1|u-LA%$69u33T#Ua*R",
+      "PoolIdentity": "qa.navinet.local\\SA-QL-coreui",
+      "PortalUiServiceDomain": "http://open-int-portaluiservice.qa.navinet.local"
+    },
+    "NaviNetCoreUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-coreui"
+    },
+    "NaviNetDefaultPermissions": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "PowershellTargetDir": "c:\\tempchef",
+      "SetDefaultPermissionsPowershellFile": "SetDefaultPermissions.ps1",
+      "User": "SA-QL-PortalUISvc"
+    },
+    "NaviNetDirectoryConnect": {
+      "Build": "1",
+      "Connect_ExtensionsFolder": "D:\\NaviMedix\\NaviNet\\DirectoryService\\Connect",
+      "NaviNetDirectoryConnect": {
+        "force_reinstall": "true"
+      }
+    },
+    "NaviNetDirectoryService": {
+      "ActiveDatabaseEnvironment": "OpenInt",
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-PDService",
+      "AppPoolIdentityPassword": "t@caM9q*6L8h",
+      "AutoStart": "true",
+      "Build": "*",
+      "Connect_ExtensionsFolder": "D:\\NaviMedix\\NaviNet\\DirectoryService\\Connect",
+      "DebugModeEnabled": "true",
+      "DefaultConnectionStringCacheExpireTimeLength": 5,
+      "DefaultLoggerLogLevel": "Warn",
+      "MDMUtilDatabaseConnectionString": "Data Source=QADBSQLCL01.test1.qa%3BInitial Catalog=MDMUtil%3BIntegrated Security=True",
+      "MaxResultsLimit": 2000,
+      "MiniProfilerRequestLoggingEnabled": false,
+      "PlanManagementServiceConfigUrlTemplate": "/api/management/plans/{planShortName}/products/directory/configurations/{config-document}",
+      "PlanManagementServiceConnectConfigVersion": 1,
+      "PlanManagementServiceDomain": "http://open-int-planmgmtservice.qa.navinet.local",
+      "PlanManagementServicePlanConfigVersion": 1,
+      "SplunkPort": "8089",
+      "SplunkServer": "qaifsplunk02.test1.qa"
+    },
+    "NaviNetEligibilityBenefitsAries": {
+      "Build": "1",
+      "NNEB_ARIES_APP_POOL_NAME": "EligibilityBenefitsAries",
+      "NNEB_ARIES_APP_POOL_PWD": "D2uj7bNKgLjjTAsJnH3pzYFeUXebVk9BYTZehLvxcuyaT4axV7WFK9a3EnyjyqG9",
+      "NNEB_ARIES_APP_POOL_USER": "QA.NAVINET.LOCAL\\SA-QL-EBAries",
+      "TargetDirectory": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\Aries"
+    },
+    "NaviNetEligibilityBenefitsAriesServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-EBAries"
+    },
+    "NaviNetEligibilityBenefitsService": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\NaviNet\\EligibilityBenefits",
+      "Build": "4",
+      "DRIVE": "D:",
+      "NNEB_CIRCUIT_STATISTICS_CLEANUP_INTERVAL": "30000",
+      "NNEB_CIRCUIT_STATISTICS_CLEANUP_RUNINTERVAL": "1000",
+      "NNEB_COMPONENT_LOGGING_ENABLED": "false",
+      "NNEB_CONNECT_EXTENSIONS_FOLDER": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\Connect",
+      "NNEB_DIR": "%BASE_DIR%\\Service",
+      "NNEB_DIR_CONNECT_ENVIRONMENT_CONFIG": "%NNEB_DIR_WEB%\\Bin\\Conf",
+      "NNEB_DIR_FEDERATION_RUNTIME": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\FederationRuntime",
+      "NNEB_DIR_LOG": "%NNEB_DIR%\\Log",
+      "NNEB_DIR_RUNTIME": "%NNEB_DIR%\\Runtime",
+      "NNEB_DIR_SCRIPTS": "%NNEB_DIR%\\Scripts",
+      "NNEB_DIR_WEB": "%NNEB_DIR%\\Web",
+      "NNEB_EVENT_PUB_DEST_CONTENT_TYPE": "application/json",
+      "NNEB_EVENT_PUB_DEST_NAME": "EbEventNotification",
+      "NNEB_EVENT_PUB_DEST_SEND_DELIVERY_MODE": "Persistent",
+      "NNEB_EVENT_PUB_DEST_SEND_MSG_EXPIRE": "0",
+      "NNEB_EVENT_PUB_DEST_SEND_MSG_PRIORITY": "Low",
+      "NNEB_EVENT_PUB_DEST_SEND_PATH": "ELIGIBILITYBENEFITS.EVENTS.OUTBOUND.QUEUE",
+      "NNEB_EVENT_PUB_JOURNAL_DATABASE_CONNECTION_STRING": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournal;Integrated Security=true;",
+      "NNEB_EVENT_PUB_TURNOFF": "false",
+      "NNEB_EVENT_PUB_URI": "activemq:failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)?transport.timeout=2000",
+      "NNEB_EXCEPTION_DETAILS": "true",
+      "NNEB_LOGGING_SERVER_ADDRESS": "qaifsplunk02.test1.qa",
+      "NNEB_LOGGING_SERVER_PORT": "514",
+      "NNEB_LOGGING_SERVER_TIMEOUT": "60000",
+      "NNEB_MASTER_CONFIG_BASE_PATH": "/api/management/plans/{planShortName}",
+      "NNEB_MASTER_CONFIG_VERSION": "2",
+      "NNEB_PIPELINE_CONFIGURATION_CACHE_EXPIRY": "1000",
+      "NNEB_PLAN_MANAGEMENT_BASE_ADDRESS": "https://api.navinet.net/",
+      "NNEB_PLAN_MANAGEMENT_SERVICE_DOMAIN": "http://open-int-planmgmtservice.qa.navinet.local/",
+      "NNEB_SERVICE_ALL_PAYER_SERVICE_ID_LIST": "-10055",
+      "NNEB_SERVICE_APP_POOL_NAME": "EligibilityBenefitsService",
+      "NNEB_SERVICE_APP_POOL_PWD": "3vuZaFraScUMNg5fk3Z9atA9yq2EKAL23xjJbNwjtJYdVmwupQJUujdTr9cMHhfK",
+      "NNEB_SERVICE_APP_POOL_USER": "QA.NAVINET.LOCAL\\SA-QL-EBService",
+      "NNEB_SERVICE_CONFIG_BASE_PATH": "/api/management/plans/{planShortName}/products/eligibility-benefits/configurations/service",
+      "NNEB_SERVICE_CONFIG_VERSION": "1",
+      "NNEB_SHARED_SERVICES_CONFIG_XML_ENABLED": "false",
+      "NNEB_TIMED_STATS_INTERVAL": "30000",
+      "NNEB_TIMED_STATS_INTERVAL_STRING": "30000",
+      "NNEB_USE_MOCK_PLAN_MANAGEMENT_SERVICE": "false"
+    },
+    "NaviNetEligibilityBenefitsServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-EBService"
+    },
+    "NaviNetEligibilityBenefitsUI": {
+      "BASE_DIR": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits",
+      "Build": "20",
+      "DRIVE": "D:",
+      "NNEB_CIRCUIT_STATISTICS_CLEANUP_INTERVAL": "30000",
+      "NNEB_CIRCUIT_STATISTICS_CLEANUP_RUN_INTERVAL": "10000",
+      "NNEB_COMPONENT_LOGGING_ENABLED": "false",
+      "NNEB_CONNECT_EXTENSIONS_FOLDER": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UIConnect",
+      "NNEB_DEBUG_ENABLED": "false",
+      "NNEB_DIR": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI",
+      "NNEB_DIR_CONNECT_ENVIRONMENT_CONFIG": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI\\Web\\Conf",
+      "NNEB_DIR_FEDERATION_RUNTIME": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\FederationRuntime",
+      "NNEB_DIR_LOG": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI\\Log",
+      "NNEB_DIR_RUNTIME": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI\\Runtime",
+      "NNEB_DIR_SCRIPTS": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI\\Scripts",
+      "NNEB_DIR_WEB": "D:\\NaviMedix\\NaviNet\\EligibilityBenefits\\UI\\Web",
+      "NNEB_EB_SERVICE_TYPE": "Types.TypeEligibilityBenefitsPatientSearchService",
+      "NNEB_EB_SERVICE_URL": "http://10.37.40.44/eligibility-benefits-service/search",
+      "NNEB_EDI271_TRANSFORM_SERVICE_TYPE": "Types.TypeEdi271TransformationService",
+      "NNEB_EDI271_TRANSFORM_SERVICE_URL": "http://10.37.40.44/eligibility-benefits-service/transformation",
+      "NNEB_EVENTS_CUSTOM_CONTENT_SERVED_URL": "http://10.37.40.44/eligibility-benefits-service/events/custom-content-served",
+      "NNEB_EVENTS_VIEWED_URL": "http://10.37.40.44/eligibility-benefits-service/events/viewed",
+      "NNEB_EVENT_PUBLISHER_SERVICE_TYPE": "Types.TypeEventPublisherService",
+      "NNEB_EXPAND_SERVICE_TYPE": "Types.TypeEligibilityBenefitsExpandService",
+      "NNEB_EXPAND_SERVICE_URL": "http://localhost/eligibility-benefits-service/expand",
+      "NNEB_LOGGING_SERVER_ADDRESS": "localhost",
+      "NNEB_LOGGING_SERVER_PORT": "514",
+      "NNEB_LOGGING_SERVER_TIMEOUT": "60000",
+      "NNEB_MAGICHUB_URL": "//ws.pitest.navimedix.com/magic-hub/signalr",
+      "NNEB_MENU_SERVICE_URL": "http://open-int-portaluiservice.qa.navinet.local/portal-ui-service/menus/",
+      "NNEB_MINIPROFILER_LOCALREQUESTS_ENABLED": "False",
+      "NNEB_MINIPROFILER_REMOTEREQUESTS_ENABLED": "False",
+      "NNEB_MINIPROFILER_REQUESTLOGGING_ENABLED": "False",
+      "NNEB_NOTIFICATION_NETINTEL_BROKER_URI": "activemq:failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616,tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616)",
+      "NNEB_NOTIFICATION_NETINTEL_EVENTJOURNAL_CONNECTION_STRING": "Data Source=AIDBCORE01.TEST1.QA;Initial Catalog=NaviNet;uid=rpa;password=navimedix;",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_CONTENT_TYPE": "application/json",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_IGNORE": "false",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_MESSAGE_DELIVERY_MODE": "Persistent",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_MESSAGE_EXPIRY_TIME": "2500",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_MESSAGE_PRIORITY": "Low",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_NAME": "EbEventNotification",
+      "NNEB_NOTIFICATION_NETINTEL_SEND_QUEUE": "queue://ELIGIBILITYBENEFITS.EVENTS.OUTBOUND.QUEUE",
+      "NNEB_PIPELINE_CONFIGURATION_CACHE_EXPIRY": "1000",
+      "NNEB_PLAN_MANAGEMENT_BASE_ADDRESS": "https://api.navinet.net/",
+      "NNEB_PROVIDER_SERVICE_TYPE": "Types.TypeProviderService",
+      "NNEB_PROVIDER_SERVICE_URL": "http://open-int-providerservice.qa.navinet.local/provider-service/providerservice.xamlx",
+      "NNEB_SEARCH_SERVICE_TYPE": "Types.TypeEligibilityBenefitsPatientSearchService",
+      "NNEB_SEARCH_SERVICE_URL": "http://10.37.40.44/eligibility-benefits-service/search",
+      "NNEB_SHARED_SERVICES_CONFIG_XML_ENABLED": "false",
+      "NNEB_SPLUNK_PORT": "514",
+      "NNEB_SPLUNK_SERVER": "qaifsplunk02.test1.qa",
+      "NNEB_SVC_CONFIG_REPOSITORY_URL": "http://open-int-ebservice.qa.navinet.local/eligibility-benefits-service/api/v1/configure/{0}",
+      "NNEB_TIMED_STATS_INTERVAL": "30000",
+      "NNEB_TIMED_STATS_INTERVAL_STRING": "30000",
+      "NNEB_TRANSFORMATION_SERVICE_TYPE": "Types.TypeEdi271TransformationService",
+      "NNEB_TRANSFORMATION_SERVICE_URL": "http://10.37.40.44/eligibility-benefits-service/transformation",
+      "NNEB_UI_APP_POOL_NAME": "EligibilityBenefitsUI",
+      "NNEB_UI_APP_POOL_PWD": "EkGRKL5hEusCuaJFmUUeLYQcUBCb9P4prkj5PGUZ7V2PK94et5tht38J8M38mQmc\n",
+      "NNEB_UI_APP_POOL_USER": "QA.NAVINET.LOCAL\\SA-QL-EBUI",
+      "NNEB_UI_CONFIG_REPOSITORY_URL": "http://open-int-ebui.qa.navinet.local/eligibility-benefits/api/v1/configure/{0}",
+      "NNEB_UI_CONTEXTUAL_PORTLET_PATH": "/contextual-portlet/1.1.0",
+      "NNEB_USE_MOCK_PLAN_MANAGEMENT_SERVICE": "false",
+      "NNEB_USE_MOCK_USER_PROFILE_SERVICE": "false",
+      "NaviNetEligibilityBenefitsUI": {
+        "force_reinstall": "false"
+      },
+      "PLAN_MGNT_CONNECT_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}/products/eligibility-benefits/configurations/ui-connect",
+      "PLAN_MGNT_CONNECT_CONFIG_VERSION": "2",
+      "PLAN_MGNT_MASTER_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "PLAN_MGNT_MASTER_CONFIG_VERSION": "2",
+      "PLAN_MGNT_UI_CONFIG_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}/products/eligibility-benefits/configurations/ui",
+      "PLAN_MGNT_UI_CONFIG_VERSION": "1",
+      "USER_PROFILE_SERVICE_URL": "http://OIAPUPSVC01.QA.NAVINET.LOCAL/v2/profiles/users/{userNid}/offices/{officeNid}/preferences"
+    },
+    "NaviNetEligibilityBenefitsUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-EBUI"
+    },
+    "NaviNetEmpowerIDInstall": {
+      "InstallSettings": {
+        "EmailAddress": "EmpowerID-noreply@navinet.net",
+        "EmailServer": "smtpalerts.navimedix.com",
+        "LicenseToken": {
+          "LicenseCompany": null,
+          "LicenseFile": "C:\\tempchef\\NaviNet.eidlic",
+          "LicenseKey": "01e12b99-736e-48aa-a511-f61afc7980d7",
+          "LicenseMode": null
+        },
+        "SAMLAuthSettings": {
+          "CertificatePfxPath": "C:\\tempchef\\eidinstall\\EmpowerIDFS-INT.pfx",
+          "UserAccount": {
+            "Password": "empowerid",
+            "Username": null
+          }
+        },
+        "ServerName": "",
+        "ServiceProviderName": "EmpowerID",
+        "SqlConnectionString": "Data Source=QADBSQL05.qa.navinet.local;Initial Catalog=EmpowerID_OI;Integrated Security=True",
+        "WebServerSettings": {
+          "IisWebSite": "Default Web Site",
+          "SslCertificatePassword": "empowerid",
+          "SslCertificateThumbprint": "C0B0D6D722A62A5FAEFE8F04620BFCC46EA6561B",
+          "Url": "https://pitest.navimedix.com/",
+          "UserAccount": {
+            "Password": "wvlw!3v2*jr(k)",
+            "Username": "qa.navinet.local\\SA-QL-EMPOWERID"
+          }
+        },
+        "WindowsServicesSettings": {
+          "InstallRadius": "True",
+          "InstallRedisCaching": "False",
+          "InstallWorkerRoleService": "True",
+          "UserAccount": {
+            "Password": "wvlw!3v2*jr(k)",
+            "Username": "qa\\sa-ql-empowerid"
+          }
+        }
+      },
+      "SmtpEmailProviderFromAddress": "EmpowerID-noreply@navinet.net",
+      "SmtpEmailProviderMailServer": "smtpalerts.navimedix.com",
+      "SmtpEmailProviderUseSSL": false,
+      "database_name": "EmpowerID_OI",
+      "database_server": "QADBSQL05.QA.NAVINET.LOCAL",
+      "eid_build": 58,
+      "eid_version": "5.0.7"
+    },
+    "NaviNetGen1SessionAdapter": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\NaviNet\\Core",
+      "Build": "*",
+      "DRIVE": "D:",
+      "FEDERATION_RUNTIME_DIR": "\\\\OIWBPORTALUI01\\Bin\\NaviMedixConfig",
+      "INSTALL_MAIL_RECIPIENTS": "qa_exceptions@navimedix.com",
+      "INSTALL_PROJECT_DRIVE": "D:",
+      "NAVISTRINGCACHE_SERVICE_PATH": "%DRIVE%\\NaviMedix\\NaviNet\\NaviNetNCacheSession\\Bin",
+      "NN_DRIVE": "D:",
+      "PROJECT_BIN_DIR": "%PROJECT_DIR%\\Bin",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%",
+      "PROJECT_NAME": "NaviNetGen1SessionAdapter"
+    },
+    "NaviNetHomeCms": {
+      "ALLOWED_ACCESS_ROLE": "Everyone",
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\NaviNet",
+      "Build": "40",
+      "DRIVE": "C:",
+      "IMAGE_MANAGER_DIR": "%KB_PATH%\\ImageManager",
+      "IMAGE_MANAGER_UPLOAD_DIR": "%IMAGE_MANAGER_DIR%\\NMDX_CMS",
+      "IdentityPassword": "navimedix",
+      "KB_PATH": "C:\\NaviMedix\\CmsSharedResources",
+      "KB_TEMPLATE_PATH": "%PROJECT_RUNTIME_DIR%",
+      "LOG_DIR": "%BASE_DIR%\\%PROJECT_NAME%\\Log",
+      "MARKETING_CAMPAIGN_CACHE_TIMEOUT": "60",
+      "NAVINET_DB_CONNECTION": "Data Source=AIDBCORE01.TEST1.QA;Initial Catalog=NaviNet;User ID=rpa;Password=navimedix;",
+      "PLANSHAREDRESOURCES_SERVERLIST": "QADTAPP18E3AP01",
+      "PROJECT_DIR": "%BASE_DIR%\\%PROJECT_NAME%\\Cms",
+      "PROJECT_NAME": "Home",
+      "PROJECT_RUNTIME_DIR": "%PROJECT_DIR%\\Runtime",
+      "PoolIdentity": "TEST1.QA\\rpa_user"
+    },
+    "NaviNetOrgEntities_4_1": {
+      "Build": "*"
+    },
+    "NaviNetOrgEntities_5_0": {
+      "Build": "*"
+    },
+    "NaviNetPasswordSecurity_5_0": {
+      "Build": "*"
+    },
+    "NaviNetPortalMasterPages_4_1": {
+      "Build": "*"
+    },
+    "NaviNetPortalMasterPages_5_0": {
+      "Build": "*"
+    },
+    "NaviNetProviderService": {
+      "BASE_DIR": "%DRIVE%\\NaviMedix\\NaviNet\\Provider",
+      "Build": "1",
+      "DRIVE": "D:",
+      "NNPS_APP_POOL_NAME": "ProviderService",
+      "NNPS_APP_POOL_PWD": "I3$BN+i3sI*aep2c#5%%b%%y^|e",
+      "NNPS_APP_POOL_USER": "QA.NAVINET.LOCAL\\SA-QL-PS",
+      "NNPS_DIR": "%BASE_DIR%\\Service",
+      "NNPS_DIR_FEDERATION_RUNTIME": "%FEDERATION_RESOURCES_SHARE%\\Server\\NaviMedix\\FederationRuntime",
+      "NNPS_DIR_LOG": "%NNPS_DIR%\\Log",
+      "NNPS_DIR_RUNTIME": "%NNPS_DIR%\\Runtime",
+      "NNPS_DIR_SCRIPTS": "%NNPS_DIR%\\Scripts"
+    },
+    "NaviNetProviderServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-PS"
+    },
+    "NaviNetReferralsConnect": {
+      "Build": "*",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Referrals\\Connect"
+    },
+    "NaviNetReferralsConnect_Aries": {
+      "Build": "*",
+      "ReferralsSimEndpoint": "http://open-int-referralsservice.qa.navinet.local/ReferralsSim/SoapHttpSim.aspx",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Referrals\\Connect"
+    },
+    "NaviNetReferralsConnect_Common": {
+      "Build": "*",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Referrals\\Connect"
+    },
+    "NaviNetReferralsConnect_Ibc": {
+      "Build": "*",
+      "HNJHReferralSubmissionUrl": "TBD",
+      "IbcDBConnectionString": "Data Source=AIDBMT41.test1.qa;Initial Catalog=PlanHMDB;User ID=sa;Password=eng",
+      "IbcReferralSubmissionUrl": "https://servicestenv7.highmark.com/edirpc/Core",
+      "TargetDirectory_ConnectExtensions": "D:\\NaviMedix\\NaviNet\\Referrals\\Connect"
+    },
+    "NaviNetReferralsMessaging": {
+      "environments": {
+        "OPENINT": {
+          "EventRoutingDeadLetterQueueEndpoint": "activemq:REFERRALS.EVENTS.DL.QUEUE",
+          "EventRoutingFromEndpoint": "activemq:REFERRALS.EVENTS.OUTBOUND.QUEUE",
+          "EventRoutingGlobalEexceptionHandlerName": "OPENINT.REFERRALS.EVENTS.ROUTING.GLOBALEXCEPTIONHANDLER",
+          "EventRoutingRouteName": "OPENINT.NAVINETREFERRALSMESSAGING.EVENTS.ROUTING",
+          "EventRoutingRouterNodeName": "OPENINT.NAVINETREFERRALSMESSAGING.EVENTS.ROUTING.EVENTROUTER",
+          "EventRoutingUnrecoverableExceptionHandlerName": "OPENINT.REFERRALS.EVENTS.ROUTING.UNRECOVERABLEEXCEPTIONHANDLER",
+          "routingtable": {
+            "nnt:referrals.*": [
+              "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+              "databrkr:NAVINETREFERRALS.AUDIT.INBOUND.QUEUE"
+            ],
+            "nnt:referrals/Submit": [
+              "activemq:KAFKAMESSAGING.EVENTS.OUTBOUND.QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "NaviNetReferralsService": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-REFSVC",
+      "AppPoolIdentityPassword": "ws0g&at(68)3m=",
+      "Build": "*",
+      "ConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\Referrals\\Connect",
+      "DBDatabase": "NavinetReferralsDB_OI",
+      "DBServer": "10.37.45.9",
+      "DebugModeEnabled": "false",
+      "DefaultConfigExpireTimeLength": 1,
+      "DefaultLoggerLogLevel": "Debug",
+      "DirectoryServiceBaseUrl": "http://OPEN-INT-DIRECTORYSSVC.QA.NAVINET.LOCAL/v2/directory/",
+      "DynamicAppPoolName": "ReferralsService",
+      "EdiTracing": true,
+      "EventPublishingEnabled": true,
+      "LogToFileSystem": false,
+      "NotificationEventConnectionUri": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
+      "NotificationEventJournalDBConnectionString": "Data Source=10.37.45.9;Initial Catalog=EventJournalReferrals_OI;Integrated Security=true;",
+      "PlanManagementConfigUrl": "/products/referrals/configurations/service",
+      "PlanManagementConfigVersion": 1,
+      "PlanManagementPlanUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "ReferenceNumberApiUrl": "http://open-int-referralsservice.qa.navinet.local/api/referrals/plans/{planShortName}/reference-numbers",
+      "ReferralEventApiUrl": "http://open-int-referralsservice.qa.navinet.local/api/referrals/plans/{planShortName}/events/{eventType}",
+      "SplunkPort": "514",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\Referrals\\Service",
+      "TraceLogFolder": "D:\\NaviMedix\\NaviNet\\Referrals\\Service\\Log",
+      "VocabulariesServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local/vocabularies"
+    },
+    "NaviNetReferralsServiceServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-REFSVC"
+    },
+    "NaviNetReferralsUI": {
+      "ApiBaseUrl": "http://open-int-referralsservice.qa.navinet.local/api/referrals/",
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-REFUI",
+      "AppPoolIdentityPassword": "ce2ab%wv(5)xg",
+      "AutoStart": "true",
+      "Build": "*",
+      "CustomErrorsMode": "On",
+      "DebugModeEnabled": "false",
+      "DefaultConfigExpireTimeLength": 1,
+      "DefaultLoggerLogLevel": "Debug",
+      "DirectoryServiceBaseUrl": "http://OPEN-INT-DIRECTORYSSVC.QA.NAVINET.LOCAL/v2/directory/",
+      "DynamicAppPoolName": "ReferralsUI",
+      "EligibilityBenefitsDetailUrl": "/eligibility-benefits/{planShortName}/detail",
+      "EligibilityBenefitsSearchUrl": "/eligibility-benefits/{planShortName}/search",
+      "EnvironmentBaseUrl": "https://pitest.navimedix.com",
+      "EventPublishingEnabled": "true",
+      "LogToFileSystem": false,
+      "MenuServiceUrl": "http://open-int-portaluiservice.qa.navinet.local/portal-ui-service/menus/",
+      "MiniProfilerDisplayOnUi": false,
+      "MiniProfilerRequestLoggingEnabled": false,
+      "MiniProfilerSplunkServer": "qaifsplunk02.test1.qa",
+      "PlanManagementConfigUrl": "/products/referrals/configurations/ui",
+      "PlanManagementConfigVersion": 1,
+      "PlanManagementPlanUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planShortName}",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\Referrals\\UI",
+      "TraceLogFolder": "D:\\NaviMedix\\NaviNet\\Referrals\\UI\\Log",
+      "VocabulariesServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local/vocabularies"
+    },
+    "NaviNetReferralsUIServiceAccount": {
+      "Domain": "QA.NAVINET.LOCAL",
+      "User": "SA-QL-REFUI"
+    },
+    "NaviNetSessionKernel_4_1": {
+      "Build": "*"
+    },
+    "NaviNetSessionKernel_5_0": {
+      "Build": "*"
+    },
+    "NaviNetSessionService": {
+      "Build": "",
+      "DRIVE": "",
+      "NAVIMEDIX_HOME": "",
+      "NNSS_COMPLUS_INSTALL_MODE": "",
+      "NNSS_COMPLUS_SKIP_REGISTER": ""
+    },
+    "NaviNetSharedServicesConfig": {
+      "ARIES_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "ARIES_ENDPOINT": "http://10.37.40.44/aries-service/EligibilityBenefitsService.svc",
+      "AWESOME_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_INTEGRATION_TRACE_LOGGER_ENABLED": "false",
+      "BCBSNEBRASKA_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_INTEGRATION_TRACE_LOGGER_ENABLED": "false",
+      "BCBSNEBRASKA_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "BCBSNEBRASKA_INTEGRATION_SOAP_USERNAME": "TBD",
+      "Build": "1",
+      "CBC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "",
+      "CBC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "",
+      "CBC_CLAIM_STATUS_INQUIRY_INTEGRATION_TRACE_LOGGER_ENABLED": "",
+      "CBC_CONTEXTUAL_PORTLET_ENABLED": "",
+      "CBC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "",
+      "CBC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "",
+      "CBC_ELIGIBILITY_BENEFITS_INTEGRATION_TRACE_LOGGER_ENABLED": "",
+      "CBC_INTEGRATION_SOAP_PASSWORD": "",
+      "CBC_INTEGRATION_SOAP_USERNAME": "",
+      "EDI_ISA15_ENVIRONMENT_INDICATOR": "T",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_INTEGRATION_TRACE_LOGGER_ENABLED": "",
+      "GEISINGER_CONTEXTUAL_PORTLET_ENABLED": "",
+      "GEISINGER_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "",
+      "GEISINGER_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "",
+      "GEISINGER_ELIGIBILITY_BENEFITS_INTEGRATION_TRACE_LOGGER_ENABLED": "",
+      "GEISINGER_INTEGRATION_SOAP_PASSWORD": "",
+      "GEISINGER_INTEGRATION_SOAP_USERNAME": "",
+      "NNSSC_INTEGRATION_TARGET": "Adapters.Mock",
+      "NNSSC_INTEGRATION_TRACE_LOGGER_ENABLED": "false",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_INTEGRATION_TRACE_LOGGER_ENABLED": "false",
+      "QUALCARE_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "QUALCARE_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "QUALCARE_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "QUALCARE_ELIGIBILITY_BENEFITS_INTEGRATION_TRACE_LOGGER_ENABLED": "false",
+      "QUALCARE_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "QUALCARE_INTEGRATION_SOAP_USERNAME": "TBD",
+      "UHC_CONTEXTUAL_PORTLET_ENABLED": "false"
+    },
+    "NaviNetSignalRMagicHub": {
+      "AppPoolIdentity": "qa.navinet.local\\SA-QL-MagicHub",
+      "AppPoolIdentityPassword": "wug%wu*n0q(x3)",
+      "Build": "2",
+      "EnableAuthorization": "true",
+      "MaxOfficeNid": "-1",
+      "MessageBusConnectionUri": "activemq:failover:(tcp://OIWBBRKR01.qa.navinet.local:61616)",
+      "MinOfficeNid": "-1",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\SignalR.MagicHub",
+      "TargetDirectory_Resource": "%federation_resources_share%\\Client\\NaviMedix\\NaviNet\\SignalR.MagicHub"
+    },
+    "Neo4J": {
+      "Neo4j_configuration_files": {
+        "/conf/neo4j-server.properties": {
+          "org.neo4j.server.database.location": "/mnt/neo4j/graph.db"
+        },
+        "/conf/neo4j.properties": {
+          "ha.initial_hosts": "OIIFNEO4J01.QA.NAVINET.LOCAL:5001,OIIFNEO4J02.QA.NAVINET.LOCAL:5001,OIIFNEO4J03.QA.NAVINET.LOCAL:5001",
+          "ha.tx_push_factor": "1"
+        }
+      }
+    },
+    "NetworkIntelligenceMessaging": {
+      "environments": {
+        "OPENINT": {
+          "Audit": {
+            "DeadLetterQueueEndpoint": "activemq:ACTIONEVENTSVC.EVENTS.DL.QUEUE",
+            "EventRoutingGlobalEexceptionHandlerName": "OPENINT.ACTIONEVENTSVC.EVENTS.OUTBOUND.GLOBALEXCEPTIONHANDLER",
+            "EventRoutingUnrecoverableExceptionHandlerName": "OPENINT.ACTIONEVENTSVC.EVENTS.OUTBOUND.UNRECOVERABLEEXCEPTIONHANDLER",
+            "FromEndPoint": "activemq:ACTIONEVENTSVC.EVENTS.OUTBOUND.QUEUE",
+            "NodeName": "OPENINT.ACTIONEVENTSVC.PARTNEREVENTS.AUDITING",
+            "RouteName": "OPENINT.ACTIONEVENTSVC.PARTNEREVENTS.AUDITING"
+          },
+          "EventRouting": {
+            "DeadLetterQueueEndpoint": "activemq:ACTIONEVENTSVC.EVENTFEED.DL.QUEUE",
+            "FromEndPoint": "activemq:RULEPOINT.ACTIONABLEEVENT.OUTBOUND.QUEUE",
+            "NodeName": "OPENINT.ACTIONEVENTSVC.EVENTFEED.ROUTING.EVENTROUTER",
+            "RouteName": "OPENINT.ACTIONEVENTSVC.EVENTFEED.ROUTING"
+          },
+          "routing": {
+            "audit": {
+              "nnt:network-intelligence/partner/outbound-actionable-event": [
+                "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+                "databrkr:NETWORKINTELLIGENCE.AUDIT.INBOUND.QUEUE"
+              ]
+            },
+            "event": {
+              "nnt:network-intelligence/partner/actionable-event": [
+                "activemq:ACTIONEVENTSVC.EVENTFEED.INBOUND.QUEUE"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NotificationService": {
+      "Build": "*",
+      "NEN_DATA_TAP_SERVER_ALL": "TBD",
+      "NEN_DATA_TAP_SERVER_LIST": "''",
+      "NEN_DB_NAME": "NotificationService",
+      "NEN_DB_SERVER": "AIDBMT41.TEST1.QA",
+      "NEN_DB_SKIP_INSTALL": "true",
+      "NEN_DIR_ASSEMBLYLOAD_REL": "..\\Code\\Bin",
+      "NEN_DP_EXCEPTION_LOGGER_ENABLED": "true",
+      "NEN_DP_MESSAGE_PROCESSOR_THREAD_POOL_MAXIMUM_WORKER_THREADS": "25",
+      "NEN_DP_REPROCESSOR_LISTENER_INPUT_RESOURCE_RECEIVECOUNT": "1",
+      "NEN_DP_REPROCESSOR_LISTENER_SLEEP_INTERVAL_MILLISECONDS": "500",
+      "NEN_DP_REPROCESSOR_LISTENER_THREADS_PER_INPUT_RESOURCE_RECEIVE": "1",
+      "NEN_DP_TRACE_LOGGER_ENABLED": "true",
+      "NEN_DP_WORKER_THREAD_COUNT": "1",
+      "NEN_DP_WORKER_THREAD_IDLE_SLEEP_INTERVAL_MILLISECONDS": "1000",
+      "NEN_FAILURE_EMAILRECIPIENT": "$MACRO_EVAL[Registry.GetValue('Software\\NaviMedix','SendMailOnErrorReceiver')]$",
+      "NEN_FUNNEL_QUEUE_MSMQ_PATH": "%NEN_MSMQ_FORMAT%%NEN_SERVER_NAME%\\private$\\FUNNEL",
+      "NEN_LEGACY_EVENT_BROKER_SERVER_ALL": "",
+      "NEN_LEGACY_EVENT_BROKER_SERVER_LIST": "",
+      "NEN_MSMQ_FORMAT": "FORMATNAME:DIRECT=OS:",
+      "NEN_MSMQ_RECEIVE_WAIT_INTERVAL": "10",
+      "NEN_PERF_MON_ENABLED": "true",
+      "NEN_SERVER_NAME": ".",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_DATA_TAP_RECEIVER_INCLUDES_ENABLED": "false",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_DATA_TAP_RECEIVER_URL": "undefined",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_INCLUDES_ENABLED": "true",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_LEGACY_EVENT_BROKER_EXPIRY_TIME": "",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_LEGACY_EVENT_BROKER_INCLUDES_ENABLED": "",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_LEGACY_EVENT_BROKER_PRIORITY": "",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_LEGACY_EVENT_BROKER_SEND_PATH": "",
+      "NEN_SUBSCRIBER_ROUTING_POLICY_LEGACY_EVENT_BROKER_URI": "",
+      "SPLUNK_SOCKET_TCP_SERVER_PORT": "8090"
+    },
+    "OpenAlertsService": {
+      "ActiveMQQueueName": "queue://OPENALERTS.EVENTS.OUTBOUND.QUEUE",
+      "ActiveMQURL": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-OPALTSVC",
+      "Build": "*",
+      "DBDatabase": "OpenAlerts_OI",
+      "DBServer": "QADBSQLCL01.test1.qa",
+      "EventJournalDatabase": "EventJournal",
+      "EventJournalDbServer": "QADBSQLCL01.TEST1.QA",
+      "EventPublishingEnabled": true,
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\OpenAlertsService"
+    },
+    "OpenAlertsUI": {
+      "AlertsServiceBaseUrl": "api-oi-int.navinet.net/api/alerts",
+      "AppPoolIdentity": "QA\\SA-QL-openalertsui",
+      "Build": "*"
+    },
+    "PlanManagementCouchbase": {
+      "Build": "*",
+      "couchbase": {
+        "bucket": {
+          "name": "OPEN-INT.PLAN.MANAGEMENT"
+        },
+        "server": {
+          "hostName": "ORCOUCHCFG01.qa.navinet.local"
+        }
+      }
+    },
+    "PlanManagementService": {
+      "AppPoolIdentity": "qa.navinet.local\\SA-QL-planmgtsvc",
+      "Build": "*",
+      "ConfigurationCacheSeconds": 1,
+      "CouchbaseBucket": "PLAN.MANAGEMENT",
+      "CouchbaseBucketPassword": "membase",
+      "CouchbaseDesignDoc": "http://ORCOUCHCFG01.QA.NAVINET.LOCAL:8092/PLAN.MANAGEMENT/_design/PlanManagement",
+      "CouchbasePassword": "navimedix",
+      "CouchbaseServers": "http://ORCOUCHCFG01.QA.NAVINET.LOCAL:8091/pools|http://ORCOUCHCFG02.QA.NAVINET.LOCAL:8091/pools|http://ORCOUCHCFG03.QA.NAVINET.LOCAL:8091/pools",
+      "CouchbaseUserName": "Administrator",
+      "DebugModeEnabled": "false",
+      "SplunkPort": "514",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\PlanManagement\\Service",
+      "planCatalogViewName": "vwPlanProductCatalog"
+    },
+    "PlanManagementUI": {
+      "AppPoolIdentity": "qa.navinet.local\\SA-QL-planmgtui",
+      "AutoStart": "true",
+      "Build": "*",
+      "ContentServiceImplementation": "NaviNet.PlanManagement.UI.Web.Services.DrupalPlanCentralContentService",
+      "DefaultPMUILoggerLogLevel": "Warn",
+      "DrupalOAuthConsumerKey": "A33TXYHJseymAk7j3c8YHowk95wX5kUk",
+      "DrupalOAuthConsumerSecret": "vj4aPZNRNndM5FP3L5t4DSDXkQmwURgF",
+      "DrupalOAuthHost": "http://cms-staging.navimedix.com",
+      "EventBrokerUri": "activemq:failover:(tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616,tcp://OIEVTBRKR02.QA.NAVINET.LOCAL:61616)?randomize=false",
+      "EventPublishingEnabled": "true",
+      "MenuServiceUrl": "http://open-int-portaluiservice.qa.navinet.local/portal-ui-service/menus/",
+      "ObjectStorageApiBaseUrl": "http://OIWBOBJSER01.QA.NAVINET.LOCAL/v1/",
+      "PlanManagementServiceUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/{planUrlIdentifier}/products/plan-central/configurations/ui",
+      "PlanManagementUI": {
+        "force_reinstall": "false"
+      },
+      "SplunkPort": "514",
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\PlanManagement\\UI"
+    },
+    "PlatformServicesObjectStorageApi": {
+      "AppPoolIdentity": "qa\\SA-QL-OSSVC",
+      "AppSettings": {
+        "BufferSizeInBytes": "1048576",
+        "RetryCount": "3",
+        "SchedulerServiceIntegrationEnabled": "true",
+        "SchedulerServiceNamePrefix": "OSS-",
+        "SchedulerServiceUrl": "http://api-oi-int.navinet.net/v1/Scheduler",
+        "TemporaryObjectFileLocation": "C:\\temp\\ObjectStorage\\",
+        "UseMockObjectStoreDB": "false",
+        "WriteRequestToDiskDecisionSizeInBytes": "16777216"
+      },
+      "Build": "*",
+      "Properties": {
+        "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616,tcp://oievtbrkr01.qa.navinet.local:61616",
+        "ConnectionString": "Server=QADBSQLCL01.test1.qa;Integrated Security=true;Database=ObjectStorageDB_OI;",
+        "EventJournalConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournal;Integrated Security=true;"
+      }
+    },
+    "PlatformServicesSchedulerApi": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-SchedulerSvc",
+      "Build": "*",
+      "Debug": false,
+      "Properties": {
+        "ConnectionString": "Server=QADBSQLCL01.TEST1.QA;Database=SchedulerDB_OI;Integrated Security=true;MultipleActiveResultSets=True;",
+        "Host": "api-oi-int.navinet.net",
+        "Port": "80",
+        "UriScheme": "http"
+      },
+      "Quartz": {
+        "DataSourceDefaultConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=Quartz_OI;Trusted_Connection=True;",
+        "DataSourceDefaultProvider": "SqlServer-20"
+      }
+    },
+    "PortalUIService": {
+      "APPLICATION_POOL_NAME": "PortalUIServicePool",
+      "APPLICATION_POOL_REQUIRED": "true",
+      "APPLICATION_POOL_USERNAME": "qa.navinet.local\\SA-QL-PortalUISvc",
+      "Build": "*",
+      "CORE_DB_NAME": "NaviNet",
+      "CORE_DB_SERVER": "AIDBCORE01.TEST1.QA",
+      "ENABLE_ACTION_ITEMS": "TRUE",
+      "ENABLE_FEEDBACK_TOOL": "true",
+      "FEATURE_CACHE_EXPIRATION_IN_SECONDS": "3600",
+      "FULLY_QUALIFIED_APPLICATION_NAME": "Dynamic/portal-ui-service",
+      "LUMERIS_SSO_URL": "/SSOGateway/pingfederate/connection/lumeris.com",
+      "PORTALUISERVICE_DIR_BASE": "TBD",
+      "PORTALUISERVICE_INTERNAL_VIP_BLUE": "open-int-portaluiservice.qa.navinet.local",
+      "PORTALUISERVICE_INTERNAL_VIP_GREEN": "open-int-portaluiservice.qa.navinet.local",
+      "PORTALUISERVICE_INTERNAL_VIP_LOCAL": "open-int-portaluiservice.qa.navinet.local",
+      "PORTALUISERVICE_INTERNAL_VIP_PRODUCTION": "open-int-portaluiservice.qa.navinet.local",
+      "PORTALUISERVICE_WEBSITE_NAME": "Default Web Site",
+      "PORTAL_DB_NAME": "Portal",
+      "PORTAL_DB_SERVER": "AIDBCORE01.TEST1.QA",
+      "PlanManagementServiceBaseUri": "http://open-int-planmgmtservice.qa.navinet.local",
+      "QUALAROO_ENABLED": "true",
+      "QUALAROO_JAVASCRIPT_SRC": "//s3.amazonaws.com/ki.js/36338/71P.js",
+      "RESOURCE_PATH_CACHE_EXPIRATION_IN_SECONDS": "900",
+      "SALESFORCE_SSO_URL_FEEDBACK": "/SSOGateway/pingfederate/connection/SalesforcePortal?TargetResource=feedback",
+      "SALESFORCE_SSO_URL_SUPPORT": "/SSOGateway/pingfederate/connection/SalesforcePortal?TargetResource=contactsupport",
+      "SPLUNK_PORT": 514,
+      "SPLUNK_SERVER": "qaifsplunk02.test1.qa",
+      "ServiceAccountDomain": "qa.navinet.local",
+      "ServiceAccountUser": "SA-QL-PortalUISvc",
+      "TRADING_PARTNER_CACHE_EXPIRATION_IN_SECONDS": "3600",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\Portal\\PortalUIService\\",
+      "TargetDirectory_Resource": "%federation_resources_share%",
+      "WEB_ANALYTICS_ENABLED": "true",
+      "WEB_ANALYTICS_LOG_OUTGOING": "true"
+    },
+    "RPA_DB_PWD": "navimedix",
+    "RPA_DB_UID": "rpa",
+    "RegistrationMessaging": {
+      "environments": {
+        "OpenRC": {
+          "EventRoutingDeadLetterQueueEndpoint": "activemq:REGISTRATION.EVENTS.DL.QUEUE",
+          "EventRoutingFromEndpoint": "activemq:REGISTRATION.EVENTS.OUTBOUND.QUEUE",
+          "EventRoutingGlobalEexceptionHandlerName": "REGISTRATION.EVENTS.ROUTING.GLOBALEXCEPTIONHANDLER",
+          "EventRoutingRouteName": "REGISTRATIONMESSAGING.EVENTS.ROUTING",
+          "EventRoutingRouterNodeName": "REGISTRATIONMESSAGING.EVENTS.ROUTING.EVENTROUTER",
+          "EventRoutingUnrecoverableExceptionHandlerName": "REGISTRATION.EVENTS.ROUTING.UNRECOVERABLEEXCEPTIONHANDLER",
+          "routingtable": {
+            "nnt:registration.*": [
+              "activemq:AUDIT.REPORTING.EVENTS.INBOUND.QUEUE",
+              "databrkr:REGISTRATION.AUDIT.INBOUND.QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "ScmKitProduction": {
+      "Build": "*"
+    },
+    "SecurityService": {
+      "AppPoolIdentity": "qa\\SA-QL-SSVC",
+      "Build": "*",
+      "UseMockACL": true
+    },
+    "SignalRMagicHub": {
+      "Build": "1"
+    },
+    "SingleSignOn": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-SSOUI",
+      "AppPoolIdentityPassword": "c!232c*bgc(qo)",
+      "BASE_DIR": "D:\\NaviMedix\\NaviNet\\SingleSignOn",
+      "Build": "41",
+      "JqueryPluginsVersion": "1.9.1",
+      "JqueryVersion": "1.9.1",
+      "NetworkIntelligenceEventsGenerationEnabled": "True",
+      "PlanManagementServiceConfigHost": "HTTP://OIWBPLANMGMT01.QA.NAVINET.LOCAL",
+      "PlanManagementServiceConnectConfigUrl": "/api/management/plans/{planShortName}/products/sso/configurations/connect",
+      "PlanManagementServiceConnectConfigVersion": "1",
+      "PlanManagementServiceMasterConfigUrl": "/api/management/plans/{planShortName}",
+      "PlanManagementServiceMasterConfigVersion": "2",
+      "PlanManagementServiceSvcConfigUrl": "/api/management/plans/{planShortName}/products/sso/configurations/service",
+      "PlanManagementServiceSvcConfigVersion": "1",
+      "PlanManagementServiceUIConfigUrl": "/api/management/plans/{planShortName}/products/sso/configurations/ui",
+      "PlanManagementServiceUIConfigVersion": "1",
+      "PlanManagementServiceUiConnectConfigUrl": "/api/management/plans/{planShortName}/products/sso/configurations/ui-connect",
+      "PlanManagementServiceUiConnectConfigVersion": "1",
+      "SelesteVersion": "2.11.0",
+      "SingleSignOnConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\SingleSignOn\\Connect",
+      "SingleSignOnUiConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\SingleSignOn\\UIConnect",
+      "SplunkLoggingServerAddress": "qaifsplunk02.test1.qa",
+      "SplunkLoggingServerPort": "514",
+      "StaticServerUrl": "pitest-static.navimedix.com",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\SingleSignOn\\UI",
+      "audit_broker_hosts": "tcp://localhost:61616",
+      "audit_database_failover_connectionString": "Data Source=DVDBSQLCL01.test1.qa;Initial Catalog=EventJournalDX_DEV;Integrated Security=true;",
+      "audit_queue_name": "queue://DOCUMENTEXCHANGE.UI.EVENTS.OUTBOUND.QUEUE",
+      "force_reinstall": "true"
+    },
+    "SingleSignOnConnect": {
+      "Build": "18",
+      "SingleSignOnConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\SingleSignOn\\Connect"
+    },
+    "SingleSignOnUIConnect": {
+      "Build": "13",
+      "SingleSignOnUIConnectExtensionsFolder": "D:\\NaviMedix\\NaviNet\\SingleSignOn\\UIConnect"
+    },
+    "Splunk": {
+      "Build": "*",
+      "DeploymentServer": "qaifsplunk02.test1.qa:8089"
+    },
+    "TPAHCaritasSharedServicesConfig": {
+      "AHC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "AHC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "AHC_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "AHC_CONTEXTUAL_PORTLET_ENABLED": "FALSE",
+      "AHC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "AHC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "AHC_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "AHC_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "AHC_INTEGRATION_SOAP_USERNAME": "TBD",
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPAetnaCmmService": {
+      "AppPoolIdentity": "QA\\SA-QL-TPAetnaCmm",
+      "AppPoolIdentityPassword": "leb%g3*q8v(t5)",
+      "Build": "3",
+      "ClientCertificateIssuerName": "CN=Development CA",
+      "ClientCertificateSerialNumber": "8259B749BC1792A34E2D8F10ED17750A",
+      "ClientCertificateSubjectName": "CN=ClientCertificatesTest",
+      "ClientCertificateThumbprint": "10B59F122DD90F2B145E2D4652941A13D49B907D",
+      "ComponentElementSeparator": "|",
+      "DBDatabase": "PlanATNDB_P1",
+      "DBServer": "AIDBMT02.test1.qa",
+      "EnableAutomation": "True",
+      "EndpointBaseAddress": "http://PD-SIM-01.test1.qa",
+      "EndpointRequestUri": "testhttpcomp/httpmessagesim-new.asp",
+      "HttpPassword": "295348",
+      "HttpTimeout": 30,
+      "HttpUsername": "S021349",
+      "InterchangeReceiverId": "042064683T",
+      "InterchangeSenderId": "043355932CMM",
+      "IsClientCertificateValidationEnabled": "true",
+      "TargetDirectory_App": "D:\\NaviMedix\\NaviNet\\TPAetnaCmmService",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\TPAetnaCmmService\\API",
+      "TargetDirectory_Root": "D:\\NaviMedix",
+      "UsageIndicator": "T",
+      "ValidateEdi": "True",
+      "force_reinstall": "true"
+    },
+    "TPAetnaSharedServicesConfig": {
+      "AETNA_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "AETNA_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "AETNA_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "AETNA_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "AETNA_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "AETNA_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "AETNA_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "AETNA_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "AETNA_INTEGRATION_SOAP_USERNAME": "TBD",
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPAllPayerSharedServicesConfig": {
+      "ALLPAYER_API_DIRECTORY": "C:\\temp",
+      "Base_Path": "C:\\temp\\api\\management\\plans",
+      "Build": "5",
+      "CSI": "claim-status-inquiry",
+      "Connect_API_Version": 2,
+      "Connect_API_Version_CSI": 2,
+      "Installer_Path": "C:\\temp\\installer",
+      "InterchangeUsageIndicator": "T",
+      "Master_API_Version": 2,
+      "Master_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/<Plan_Name>",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True",
+      "Overwrite_Existing_Plan_Configuration": true,
+      "Product_URL": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans/<Plan_Name>/products/<Transaction_Name>/configurations/<Config_Name>",
+      "Service_API_Version ": 1,
+      "UI": "ui",
+      "UI_API_Version": 1,
+      "UI_API_Version_CSI": 2
+    },
+    "TPAriesSharedServicesConfig": {
+      "ARIES_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "http://localhost/CsiSim.ashx",
+      "ARIES_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "ARIES_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "ARIES_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "ARIES_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "http://10.37.40.44/aries-service/EligibilityBenefitsService.svc",
+      "ARIES_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "ARIES_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "ARIES_INTEGRATION_SOAP_PASSWORD": "g0ld3nFl33ce",
+      "ARIES_INTEGRATION_SOAP_USERNAME": "AriesAdmin",
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPBcbsNebraskaSharedServicesConfig": {
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "BCBSNEBRASKA_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "BCBSNEBRASKA_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "BCBSNEBRASKA_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "BCBSNEBRASKA_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "BCBSNEBRASKA_INTEGRATION_SOAP_USERNAME": "TBD",
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPCbcSharedServicesConfig": {
+      "Build": "1",
+      "CBC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "CBC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "CBC_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "True",
+      "CBC_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "CBC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "CBC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "CBC_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "True",
+      "CBC_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "CBC_INTEGRATION_SOAP_USERNAME": "TBD",
+      "CertPrivateKeyAccessServiceAccount": "TBD",
+      "CertPrivateKeyAccessServiceAccountCSISvc": "TBD",
+      "CertPrivateKeyAccessServiceAccountEBSvc": "TBD",
+      "Environment": "PITEST",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True",
+      "certificate_path": "C:\\Bin\\CBCCertificates\\",
+      "certutil": "C:/Windows/System32/certutil",
+      "serialnumber": "‎[\"4c1b11c2\", \"‎35def4cf\", \"00e2848f24c4661315\"]"
+    },
+    "TPCignaSharedServicesConfig": {
+      "Build": "1",
+      "CIGNA_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "CIGNA_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "TBD",
+      "CIGNA_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "CIGNA_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "CIGNA_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "CIGNA_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "TBD",
+      "CIGNA_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "CIGNA_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "CIGNA_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPGeisingerSharedServicesConfig": {
+      "Build": "3",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "GEISINGER_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "GEISINGER_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "GEISINGER_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "GEISINGER_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "GEISINGER_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "GEISINGER_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "GEISINGER_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPGeminiSharedServicesConfig": {
+      "Build": "1",
+      "GEMINI_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "GEMINI_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "TBD",
+      "GEMINI_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "GEMINI_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "GEMINI_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "GEMINI_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "TBD",
+      "GEMINI_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "GEMINI_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "GEMINI_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPGhpSharedServicesConfig": {
+      "Build": "2",
+      "GHP_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "https://dsthstopsrl.dsthealthsolutions.com/soap/?client=mhc-gtw-test",
+      "GHP_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "GHP_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "true",
+      "GHP_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "GHP_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "https://dsthstopsrl.dsthealthsolutions.com/soap/?client=mhc-gtw-test",
+      "GHP_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "GHP_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "true",
+      "GHP_INTEGRATION_SOAP_PASSWORD": "Spr1ngt1m3!",
+      "GHP_INTEGRATION_SOAP_USERNAME": "gwy.navinet",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPHealthRepublicSharedServicesConfig": {
+      "Build": "1",
+      "HEALTHREPUBLIC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "HEALTHREPUBLIC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "TBD",
+      "HEALTHREPUBLIC_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "HEALTHREPUBLIC_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "HEALTHREPUBLIC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "HEALTHREPUBLIC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "TBD",
+      "HEALTHREPUBLIC_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "HEALTHREPUBLIC_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "HEALTHREPUBLIC_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPHighmarkSharedServicesConfig": {
+      "Build": "1",
+      "HIGHMARK_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "HIGHMARK_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "HIGHMARK_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "HIGHMARK_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "HIGHMARK_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "HIGHMARK_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "HIGHMARK_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "HIGHMARK_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "HIGHMARK_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPHorizonSharedServicesConfig": {
+      "Build": "1",
+      "HORIZON_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "HORIZON_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "TBD",
+      "HORIZON_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "HORIZON_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "HORIZON_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "HORIZON_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "TBD",
+      "HORIZON_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "HORIZON_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "HORIZON_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "true"
+    },
+    "TPHppSharedServicesConfig": {
+      "Build": "1",
+      "HPP_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "HPP_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "TBD",
+      "HPP_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "false",
+      "HPP_CONTEXTUAL_PORTLET_ENABLED": "false",
+      "HPP_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "HPP_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "TBD",
+      "HPP_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "false",
+      "HPP_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "HPP_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPIbcSharedServicesConfig": {
+      "Build": "1",
+      "IBC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "IBC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.TradingPartner",
+      "IBC_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "IBC_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "IBC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "IBC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.TradingPartner",
+      "IBC_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "IBC_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "IBC_INTEGRATION_SOAP_USERNAME": "TBD",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPOscarSharedServicesConfig": {
+      "Build": "1",
+      "OSCAR_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "OSCAR_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.TradingPartner",
+      "OSCAR_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "OSCAR_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "OSCAR_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "http://54.84.46.175:8080/eligibility/realtime/soap/",
+      "OSCAR_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.TradingPartner",
+      "OSCAR_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "True",
+      "OSCAR_INTEGRATION_SOAP_PASSWORD": "navinet_pw",
+      "OSCAR_INTEGRATION_SOAP_USERNAME": "navinet",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True"
+    },
+    "TPQualCareSharedServicesConfig": {
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "QUALCARE_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "QUALCARE_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "QUALCARE_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "QUALCARE_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "QUALCARE_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "QUALCARE_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "QUALCARE_INTEGRATION_SOAP_USERNAME": "TBD"
+    },
+    "TPUnitedSharedServicesConfig": {
+      "Build": "1",
+      "OVERWRITE_SHARED_SERVICES_CONFIG": "True",
+      "UHC_CLAIM_STATUS_INQUIRY_HTTP_REQUEST_URL": "TBD",
+      "UHC_CLAIM_STATUS_INQUIRY_INTEGRATION_TARGET": "Adapters.Mock",
+      "UHC_CLAIM_STATUS_INQUIRY_TRACE_LOGGER_ENABLED": "False",
+      "UHC_CONTEXTUAL_PORTLET_ENABLED": "False",
+      "UHC_ELIGIBILITY_BENEFITS_HTTP_REQUEST_URL": "TBD",
+      "UHC_ELIGIBILITY_BENEFITS_INTEGRATION_TARGET": "Adapters.Mock",
+      "UHC_ELIGIBILITY_BENEFITS_TRACE_LOGGER_ENABLED": "False",
+      "UHC_INTEGRATION_SOAP_PASSWORD": "TBD",
+      "UHC_INTEGRATION_SOAP_USERNAME": "TBD"
+    },
+    "UserProfileService": {
+      "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-UPSVC",
+      "Build": "11",
+      "JournalingDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournal;Integrated Security=true;",
+      "QueueConnectionHosts": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
+      "UserProfileDbConnectionString": "data source=QADBSQLCL01.TEST1.QA;initial catalog=UserProfile_OI;integrated security=True;MultipleActiveResultSets=True;App=UserProfileService;Connection Timeout=15;Min Pool Size=10;Max Pool Size=100"
+    },
+    "UserProfileUI": {
+      "AppPoolIdentity": "qa.navinet.local\\SA-QL-USRPFUI",
+      "Build": "2",
+      "DaysToConsiderPlanAsNew": 45,
+      "DefaultLoggerLogLevel": "Warn",
+      "DirectoryServiceMaxBatchSearchSize": 100,
+      "DirectoryServiceOfficeAccountsUrl": "http://oiwbpdssvc01.qa.navinet.local/v2/directory/offices/{officeId}/accounts",
+      "DirectoryServiceSearchAccountOrganizationsUrl": "http://oiwbpdssvc01.qa.navinet.local/v2/directory/accountOrganizations/search",
+      "DirectoryServiceSearchAccountsUrl": "http://oiwbpdssvc01.qa.navinet.local/v2/directory/accounts/search",
+      "DirectoryServiceSearchAddressesUrl": "http://oiwbpdssvc01.qa.navinet.local/v2/directory/accountOrganizations/addresses/search",
+      "DirectoryServiceSearchPractitionersByOfficeUrl": "http://oiwbpdssvc01.qa.navinet.local/v2/directory/offices/{officeId}/practitioners/search",
+      "MonthsToDisplayInactiveBillingEntities": 13,
+      "MonthsToDisplayInactiveProviders": 13,
+      "PlanManagementServiceUrl": "http://open-int-planmgmtservice.qa.navinet.local/api/management/plans",
+      "ProviderSelectAllEnabled": true,
+      "ServiceAccountDomain": "qa.navinet.local",
+      "ServiceAccountUser": "SA-QL-USRPFUI",
+      "SplunkPort": 514,
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory_Dynamic": "D:\\NaviMedix\\NaviNet\\UserProfile\\UI",
+      "UseMockDirectoryService": "Off",
+      "UseMockPlanManagementService": false,
+      "UseMockUserProfileService": false,
+      "UserProfileServiceCreateProfileUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}",
+      "UserProfileServicePractitionersUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}/practitioners",
+      "UserProfileServiceSupportedEntitiesAddUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}/supported-entities/_add",
+      "UserProfileServiceSupportedEntitiesDeleteUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}/supported-entities/_delete",
+      "UserProfileServiceSupportedEntitiesSearchUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}/supported-entities/_search",
+      "UserProfileServiceUrl": "http://api-oi-int.navinet.net/v2/profiles/users/{userId}/offices/{officeId}"
+    },
+    "VocabulariesService": {
+      "AppPoolIdentity": "QA\\SA-QL-VOCABSVC",
+      "Build": "*",
+      "MaxResults": 50,
+      "SplunkPort": 514,
+      "SplunkServer": "qaifsplunk02.test1.qa",
+      "TargetDirectory": "D:\\NaviMedix\\NaviNet\\Vocabularies.Service",
+      "VocabulariesDbName": "VocabularyServiceDB_OI",
+      "VocabulariesDbServer": "QADBSQLCL01.test1.qa",
+      "VocabulariesService": {
+        "force_reinstall": true
+      },
+      "actionoptions": "Dynamic"
+    },
+    "VocabulariesServiceETL": {
+      "Build": "2",
+      "TargetDirectory": "D:\\NaviMedix\\NaviNet\\VocabulariesServiceETL",
+      "VocabulariesDbName": "VocabularyServiceDB_OI",
+      "actionoptions": "Dynamic"
+    },
+    "Web_5_0": {
+      "Build": "*"
+    },
+    "Zabbix": {
+      "Build": "*",
+      "CustomConfig": {
+        "Timeout": 10
+      },
+      "ServerUrl": "qaifmonmstr01.test1.qa"
+    },
+    "activemq": {
+      "DataBroker": {
+        "connectionPoolInitialSize": "5",
+        "connectionPoolMaxSize": "10",
+        "databaseName": "RawAuditRepo",
+        "databasePassword": "navimedix",
+        "databaseServer": "BIDBEDW01.NAVIMEDIX.COM\\SQL2K1201",
+        "databaseUserName": "SA-NC-DBRKR"
+      },
+      "PersistenceDirectory": "/amqdb/EventsClusterKahadb/",
+      "PersistenceType": "kahaDB",
+      "eventBrokerAddress": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616,tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
+      "navinet_lib_dir": "/opt/apache-activemq-5.9.0/lib/navinet",
+      "resourceDir": "/amqshare/EventsClusterShare/",
+      "stomp": {
+        "enabled": "true"
+      },
+      "useMirroredQueues": "true",
+      "webBrokerAddress": "tcp://oiwbbrkr01.qa.navinet.local:61616",
+      "wrapper": {
+        "app": {
+          "parameter": {}
+        }
+      }
+    },
+    "bigip": {
+      "load_balancers": {
+        "external": {
+          "bigip_address": "10.38.5.250",
+          "pools": {
+            "cmscontentui": {
+              "type": "standard"
+            },
+            "csiui": {
+              "type": "standard"
+            },
+            "ebui": {
+              "type": "standard"
+            },
+            "planmgmtui": {
+              "type": "standard"
+            }
+          }
+        },
+        "internal": {
+          "bigip_address": "10.38.5.250",
+          "pools": {
+            "cmscontentservice": {
+              "type": "standard"
+            },
+            "cmscontentui": {
+              "type": "standard"
+            },
+            "coreui": {
+              "type": "standard"
+            },
+            "csiservice": {
+              "type": "standard"
+            },
+            "csiui": {
+              "type": "standard"
+            },
+            "ebservice": {
+              "type": "standard"
+            },
+            "ebui": {
+              "type": "standard"
+            },
+            "planmgmtservice": {
+              "type": "standard"
+            },
+            "planmgmtui": {
+              "type": "standard"
+            },
+            "portalui": {
+              "type": "standard"
+            },
+            "providerservice": {
+              "type": "standard"
+            },
+            "static": {
+              "type": "standard"
+            }
+          }
+        }
+      },
+      "vips": {
+        "cmscontentservice": {
+          "actual_name": "open-int-cmscontentservice.qa.navinet.local",
+          "ip_addr": "10.38.25.15",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "csiservice": {
+          "actual_name": "open-int-csiservice.qa.navinet.local",
+          "ip_addr": "10.38.25.17",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "ebservice": {
+          "actual_name": "open-int-ebservice.qa.navinet.local",
+          "ip_addr": "10.38.25.16",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "main": {
+          "actual_name": "open-int.navimedix.com",
+          "ip_addr": "10.38.25.20",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "planmgmtservice": {
+          "actual_name": "open-int-planmgmtservice.qa.navinet.local",
+          "ip_addr": "10.38.25.13",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "portaluiservice": {
+          "actual_name": "open-int-portaluiservice.qa.navinet.local",
+          "ip_addr": "10.38.25.12",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "providerservice": {
+          "actual_name": "open-int-providerservice.qa.navinet.local",
+          "ip_addr": "10.38.25.18",
+          "lb_name": "internal",
+          "port": "80"
+        },
+        "static": {
+          "actual_name": "static-open-int.navimedix.com",
+          "ip_addr": "10.38.25.19",
+          "lb_name": "internal",
+          "port": "80"
+        }
+      }
+    },
+    "local_env_path": "C:\\Bin\\Environment"
+  },
+  "description": "Open integration test environment, code tested in this env will further be moved to ORC.",
+  "json_class": "Chef::Environment",
+  "name": "OPEN-INT",
+  "override_attributes": {}
+}

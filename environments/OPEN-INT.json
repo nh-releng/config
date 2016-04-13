@@ -312,7 +312,7 @@
     "CamelComponents": {
       "Data": {
         "BatchProcessingService": {
-          "Build": "*",
+          "Build": "1",
           "EnvironmentProperties": {
             "DataBrokerURL": "failover:(tcp://oiifdatbrkr02.qa.navinet.local:61616,tcp://oiifdatbrkr01.qa.navinet.local:61616)",
             "DatabaseName": "RawAuditRepo",

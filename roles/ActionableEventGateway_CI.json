@@ -11,7 +11,6 @@
     "recipe[Zabbix]",
     "recipe[Splunk]",
     "recipe[NuGet]",
-    "recipe[ActionableEventGateway::Default]",
-    "recipe[7Zip]"
+    "recipe[ActionableEventGateway::Default]"
   ]
 }

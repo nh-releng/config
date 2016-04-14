@@ -10,7 +10,6 @@
     "role[ActiveMQLegacyBroker_CI]",
     "recipe[ARR2_5]",
     "recipe[AccessControl]",
-    "recipe[ActiveMQService::additional_jars]",
-    "recipe[ActiveMQEventBroker::configuration]"
+    "recipe[ActiveMQService::additional_jars]"
   ]
 }

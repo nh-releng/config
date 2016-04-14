@@ -9,7 +9,6 @@
   "run_list": [
     "role[ActiveMQLegacyBroker_CI]",
     "recipe[ARR2_5]",
-    "recipe[AccessControl]",
-    "recipe[ActiveMQEventBroker::configuration]"
+    "recipe[AccessControl]"
   ]
 }

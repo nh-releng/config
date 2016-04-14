@@ -1,0 +1,14 @@
+{
+  "chef_type": "role",
+  "default_attributes": {},
+  "description": "",
+  "env_run_lists": {},
+  "json_class": "Chef::Role",
+  "name": "Decs_Test",
+  "override_attributes": {},
+  "run_list": [
+    "role[ActiveMQLegacyBroker_CI]",
+    "recipe[ARR2_5]",
+    "recipe[AccessControl]"
+  ]
+}

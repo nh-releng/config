@@ -1,0 +1,15 @@
+{
+  "chef_environment": "OPEN-INT",
+  "chef_type": "node",
+  "default": {},
+  "json_class": "Chef::Node",
+  "name": "SCSBCHEFTEST01.NAVIMEDIX.COM",
+  "normal": {
+    "tags": []
+  },
+  "override": {},
+  "run_list": [
+    "role[UserProfileService_CI]",
+    "recipe[ARR]"
+  ]
+}

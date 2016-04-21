@@ -7,9 +7,6 @@
   "name": "Decs_Test",
   "override_attributes": {},
   "run_list": [
-    "role[ActiveMQLegacyBroker_CI]",
-    "recipe[ARR2_5]",
-    "recipe[AccessControl]",
     "recipe[7Zip]"
   ]
 }

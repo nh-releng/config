@@ -5,7 +5,9 @@
   "json_class": "Chef::Node",
   "name": "DMCCANLDESS764.NAVIMEDIX.COM",
   "normal": {
-    "tags": []
+    "tags": [
+      "Decs_Boxes"
+    ]
   },
   "override": {},
   "run_list": [

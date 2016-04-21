@@ -9,6 +9,7 @@
   },
   "override": {},
   "run_list": [
-    "role[Decs_Test]"
+    "role[Decs_Test]",
+    "recipe[7Zip]"
   ]
 }

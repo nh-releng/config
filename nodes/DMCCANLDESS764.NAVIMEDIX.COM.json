@@ -10,7 +10,5 @@
     ]
   },
   "override": {},
-  "run_list": [
-    "role[NaviNetEligibilityBenefitsService_CI]"
-  ]
+  "run_list": []
 }

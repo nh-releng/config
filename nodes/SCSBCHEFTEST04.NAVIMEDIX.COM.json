@@ -1,0 +1,15 @@
+{
+  "chef_environment": "OPEN-INT",
+  "chef_type": "node",
+  "default": {},
+  "json_class": "Chef::Node",
+  "name": "SCSBCHEFTEST04.NAVIMEDIX.COM",
+  "normal": {
+    "NN_DRIVE": "c:",
+    "tags": []
+  },
+  "override": {},
+  "run_list": [
+    "recipe[Notepadplusplus]"
+  ]
+}

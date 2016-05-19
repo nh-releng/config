@@ -11,7 +11,6 @@
   },
   "override": {},
   "run_list": [
-    "role[UserProfileService_CI]",
-    "recipe[ARR]"
+    "recipe[7Zip]"
   ]
 }

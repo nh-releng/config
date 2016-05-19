@@ -1,6 +1,8 @@
 {
   "chef_type": "environment",
-  "cookbook_versions": {},
+  "cookbook_versions": {
+    "ActionableEventGateway": "~> 1.0.0"
+  },
   "default_attributes": {
     "ActionableEventGateway": {
       "ActionableEventGateway": {

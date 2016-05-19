@@ -2794,7 +2794,7 @@
     },
     "local_env_path": "C:\\Bin\\Environment"
   },
-  "description": "Open integration test environment, code tested in this env will further be moved to ORC.",
+  "description": "Open integration test environment, code tested in this env will further be moved to ORC. (test)",
   "json_class": "Chef::Environment",
   "name": "OPEN-INT",
   "override_attributes": {}

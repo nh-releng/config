@@ -275,7 +275,7 @@
       "version": "1.3.0"
     },
     "AutomiseActions": {
-      "Build": "*"
+      "Build": 10
     },
     "BatchProcessingService": {
       "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
@@ -644,11 +644,10 @@
       "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-CLUI",
       "AppPoolIdentityPassword": "RA08LljRBa68lfs4",
       "AutoStart": true,
+      "Beard": "Awesome",
       "Build": "1",
       "ClaimSubmissionServiceBaseUrl": "http://open-int-claimsubservice.qa.navinet.local",
-      "ClientValidationEnabled": true,
       "ComponentUISelesteVersion": "2.11.0",
-      "DefaultLoggerLogLevel": "Info",
       "DocumentExchangeServiceBaseUrl": "http://api-oi-int.navinet.net",
       "JQueryPluginsVersion": "1.9.1",
       "PlanManagementServiceBaseUrl": "http://open-int-planmgmtservice.qa.navinet.local/",

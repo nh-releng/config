@@ -2079,7 +2079,7 @@
       "zncrypt_storage": "/dev/sdb"
     }
   },
-  "description": "first test",
+  "description": "Second Change",
   "json_class": "Chef::Environment",
   "name": "OPEN-UAT",
   "override_attributes": {}

@@ -3,7 +3,8 @@
   "cookbook_versions": {
     "AccessControl": "= 2.0.7",
     "ActionableEventGateway": "~> 1.0.0",
-    "ActiveMQDataBroker": "= 5.9.0"
+    "ActiveMQDataBroker": "= 5.9.0",
+    "ActiveMQService": "= 5.9.0"
   },
   "default_attributes": {
     "ActionableEventGateway": {
@@ -797,8 +798,8 @@
       "Build": "*"
     },
     "ClinicalDocumentUI": {
-      "ActiveMQ_Hosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
-      "ActiveMQ_TransportTimeout": 0,
+      "ActiveMQ_Hosts": "tcp://oievtbrkr01.qa.navinet.local:61618",
+      "ActiveMQ_TransportTimeout": 30,
       "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-clinicdocui",
       "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournalDX_OI;Integrated Security=true;",
       "Build": "*",
@@ -839,7 +840,7 @@
       "AppFileCmsNaviNetHomeContentKB": "C:\\NaviMedix\\CmsSharedResources\\kb-cms-navinethome-content.xml",
       "Build": "14",
       "CmsContentServiceBasePath": "/api/users/{0}/favorites",
-      "CmsContentServiceDomain": "http://open-int-cmscontentservice.qa.navinet.local",
+      "CmsContentServiceDomain": "http://open-uat-cmscontentservice.test1.qa",
       "ContactUsPath": "SSOGateway/pingfederate/connection/SalesforcePortal?TargetResource=contactsupport",
       "DrupalContentCacheExpirySeconds": 300,
       "DrupalContentFileSystemBackupExpirySeconds": 300,
@@ -926,16 +927,6 @@
       "EventRoutingDeadLetterQueueEndpoint": "DOCUMENTEXCHANGE.CONVERSION.DL.QUEUE",
       "EventRoutingFromEndpoint": "DOCUMENTEXCHANGE.CONVERSION.INBOUND.QUEUE",
       "SvcAccountUsername": "SQL-SA-INT-docexchangeconverter"
-    },
-    "Elasticsearch": {
-      "AdditionalProperties": {
-        "gateway.expected_nodes": 3
-      },
-      "ESHeapSize": "2g",
-      "clusterName": "ElasticsearchOI",
-      "discoveryZenMinimumMasterNodes": 2,
-      "gatewayRecoverAfterNodes": 1,
-      "repoPath": "/OpenINTElasticShare/repositories"
     },
     "EligibilityBenefitsConnect": {
       "Build": "5",
@@ -2173,6 +2164,7 @@
         }
       }
     },
+    "NewApp": "BEARD",
     "NotificationService": {
       "Build": "*",
       "NEN_DATA_TAP_SERVER_ALL": "TBD",

@@ -4,7 +4,7 @@
     "AccessControl": "= 2.0.7",
     "ActionableEventGateway": "~> 1.0.0",
     "ActiveMQDataBroker": "= 5.9.0",
-    "ActiveMQService": "= 5.9.0"
+    "Ant": "= 1.9.2"
   },
   "default_attributes": {
     "ActionableEventGateway": {
@@ -761,23 +761,6 @@
       "VocabularyServiceApiVersion": 1,
       "VocabularyServiceBaseUrl": "http://open-int-vocabulariessvc.qa.navinet.local"
     },
-    "ClinicalDataService": {
-      "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
-      "AmqTransportTimeout": 0,
-      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournalDX_OI;Integrated Security=true;",
-      "Build": "*",
-      "CouchbaseServers": "http://orcouchcfg01.qa.navinet.local:8091/pools,http://orcouchcfg02.qa.navinet.local:8091/pools,http://orcouchcfg03.qa.navinet.local:8091/pools",
-      "Host": "api-oi.navinet.net",
-      "Port": 443,
-      "SearchResultLimit": 1500,
-      "SophosAddress": "virus-scanner.qa.navinet.local",
-      "SophosPort": 4010,
-      "SqlDatabase": "OpenINTClinicalGatewayDB",
-      "SqlServerAddress": "QADBSQLCL01.TEST1.QA\\SQL2K1202",
-      "SvcAccountUsername": "QA\\SA-QL-clinicdatasvr",
-      "UriScheme": "https",
-      "UseMockServices": "false"
-    },
     "ClinicalDataServiceServiceAccount": {
       "Domain": "QA.NAVINET.LOCAL",
       "User": "SA-QL-clinicdatasvr"
@@ -840,7 +823,7 @@
       "AppFileCmsNaviNetHomeContentKB": "C:\\NaviMedix\\CmsSharedResources\\kb-cms-navinethome-content.xml",
       "Build": "14",
       "CmsContentServiceBasePath": "/api/users/{0}/favorites",
-      "CmsContentServiceDomain": "http://open-uat-cmscontentservice.test1.qa",
+      "CmsContentServiceDomain": "http://open-int-cmscontentservice.qa.navinet.local",
       "ContactUsPath": "SSOGateway/pingfederate/connection/SalesforcePortal?TargetResource=contactsupport",
       "DrupalContentCacheExpirySeconds": 300,
       "DrupalContentFileSystemBackupExpirySeconds": 300,
@@ -921,6 +904,23 @@
       "StaticDomainName": "pitest-static.navimedix.com",
       "TargetDirectoryPath_Resources": "%FEDERATION_RESOURCES_SHARE%\\Client\\NaviMedix\\NaviNet\\ContextualPortlet\\Static",
       "TargetDirectoryPath_Static": "%FEDERATION_RESOURCES_SHARE%\\Client\\NaviMedix\\NaviNet\\ContextualPortlet\\Static"
+    },
+    "DocumentExchange": {
+      "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
+      "AmqTransportTimeout": 0,
+      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.QA;Initial Catalog=EventJournalDX_OI;Integrated Security=true;",
+      "Build": "*",
+      "CouchbaseServers": "http://orcouchcfg01.qa.navinet.local:8091/pools,http://orcouchcfg02.qa.navinet.local:8091/pools,http://orcouchcfg03.qa.navinet.local:8091/pools",
+      "Host": "api-oi.navinet.net",
+      "Port": 443,
+      "SearchResultLimit": 1500,
+      "SophosAddress": "virus-scanner.qa.navinet.local",
+      "SophosPort": 4010,
+      "SqlDatabase": "OpenINTClinicalGatewayDB",
+      "SqlServerAddress": "QADBSQLCL01.TEST1.QA\\SQL2K1202",
+      "SvcAccountUsername": "QA\\SA-QL-clinicdatasvr",
+      "UriScheme": "https",
+      "UseMockServices": "false"
     },
     "DocumentExchangeConverter": {
       "DbConnectionString": "jdbc:sqlserver://QADBSQLCL01.TEST1.QA;databaseName=OpenINTClinicalgatewayDB;",
@@ -2747,31 +2747,6 @@
         "Timeout": 10
       },
       "ServerUrl": "qaifmonmstr01.test1.qa"
-    },
-    "activemq": {
-      "DataBroker": {
-        "connectionPoolInitialSize": "5",
-        "connectionPoolMaxSize": "10",
-        "databaseName": "RawAuditRepo",
-        "databasePassword": "navimedix",
-        "databaseServer": "BIDBEDW01.NAVIMEDIX.COM\\SQL2K1201",
-        "databaseUserName": "SA-NC-DBRKR"
-      },
-      "PersistenceDirectory": "/amqdb/EventsClusterKahadb/",
-      "PersistenceType": "kahaDB",
-      "eventBrokerAddress": "tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616,tcp://OIEVTBRKR01.QA.NAVINET.LOCAL:61616",
-      "navinet_lib_dir": "/opt/apache-activemq-5.9.0/lib/navinet",
-      "resourceDir": "/amqshare/EventsClusterShare/",
-      "stomp": {
-        "enabled": "true"
-      },
-      "useMirroredQueues": "true",
-      "webBrokerAddress": "tcp://oiwbbrkr01.qa.navinet.local:61616",
-      "wrapper": {
-        "app": {
-          "parameter": {}
-        }
-      }
     },
     "local_env_path": "C:\\Bin\\Environment"
   },

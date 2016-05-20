@@ -1,7 +1,9 @@
 {
   "chef_type": "environment",
   "cookbook_versions": {
-    "ActionableEventGateway": "~> 1.0.0"
+    "AccessControl": "= 2.0.7",
+    "ActionableEventGateway": "~> 1.0.0",
+    "ActiveMQDataBroker": "= 5.9.0"
   },
   "default_attributes": {
     "ActionableEventGateway": {
@@ -276,19 +278,6 @@
     },
     "AutomiseActions": {
       "Build": 10
-    },
-    "BatchProcessingService": {
-      "AmqHosts": "tcp://oievtbrkr01.qa.navinet.local:61616",
-      "AppPoolIdentity": "qa.navinet.local\\SA-QL-BatchProSvc",
-      "AuditFailoverDatabaseConnectionString": "Data Source=QADBSQLCL01.TEST1.qa;Initial Catalog=EventJournal;Integrated Security=true;",
-      "Build": "*",
-      "DefaultRetryCount": "3",
-      "Host": "api-oi-int.navinet.net",
-      "Port": "80",
-      "SchedulerApiUrl": "http://api-oi-int.navinet.net/v1/Scheduler",
-      "SqlDatabase": "BatchProcessingServiceDB_OI",
-      "SqlServerAddress": "QADBSQLCL01.TEST1.QA",
-      "UriScheme": "http"
     },
     "CORE_DB_NAME": "NaviNet",
     "CORE_DB_SERVER": "10.39.20.41",
@@ -742,7 +731,7 @@
     "ClaimSubmissionUI": {
       "AppPoolIdentity": "QA.NAVINET.LOCAL\\SA-QL-CSUI",
       "AppPoolIdentityPassword": "A*4&VIC$sCkP",
-      "AttachmentDocumentAjaxBaseUrl": "http://localhost/",
+      "AttachmentDocumentAjaxBaseUrl": "http://beard01/",
       "AutoStart": true,
       "Build": "1",
       "ClaimSubmissionServiceApiVersion": 1,

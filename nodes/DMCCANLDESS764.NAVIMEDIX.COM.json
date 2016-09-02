@@ -1,10 +1,12 @@
 {
-  "chef_environment": "_default",
+  "chef_environment": "Decs_Test",
   "chef_type": "node",
   "default": {},
   "json_class": "Chef::Node",
   "name": "DMCCANLDESS764.NAVIMEDIX.COM",
-  "normal": {},
+  "normal": {
+    "tags": []
+  },
   "override": {},
   "run_list": []
 }

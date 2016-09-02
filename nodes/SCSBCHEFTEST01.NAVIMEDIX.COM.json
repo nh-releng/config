@@ -1,0 +1,10 @@
+{
+  "chef_environment": "Decs_Test",
+  "chef_type": "node",
+  "default": {},
+  "json_class": "Chef::Node",
+  "name": "SCSBCHEFTEST01.NAVIMEDIX.COM",
+  "normal": {},
+  "override": {},
+  "run_list": []
+}

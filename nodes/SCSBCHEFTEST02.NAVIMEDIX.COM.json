@@ -1,5 +1,5 @@
 {
-  "chef_environment": "OPEN-INT",
+  "chef_environment": "Decs_Test",
   "chef_type": "node",
   "default": {},
   "json_class": "Chef::Node",

@@ -10,6 +10,6 @@
   },
   "override": {},
   "run_list": [
-    "recipe[Notepadplusplus]"
+    "recipe[Cygwin]"
   ]
 }

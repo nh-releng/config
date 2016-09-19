@@ -798,7 +798,7 @@
       "User": "SA-QL-clinicdocui"
     },
     "ClinicalGateway": {
-      "Build": ""
+      "Build": "*"
     },
     "CmsContentService": {
       "Build": "3",
@@ -927,7 +927,8 @@
       "DbConnectionString": "jdbc:sqlserver://QADBSQLCL01.TEST1.QA;databaseName=OpenINTClinicalgatewayDB;",
       "EventRoutingDeadLetterQueueEndpoint": "DOCUMENTEXCHANGE.CONVERSION.DL.QUEUE",
       "EventRoutingFromEndpoint": "DOCUMENTEXCHANGE.CONVERSION.INBOUND.QUEUE",
-      "SvcAccountUsername": "SQL-SA-INT-docexchangeconverter"
+      "SvcAccountUsername": "SQL-SA-INT-docexchangeconverter",
+      "neil": "is king"
     },
     "EligibilityBenefitsConnect": {
       "Build": "5",

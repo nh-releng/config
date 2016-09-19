@@ -1,6 +1,7 @@
 {
   "chef_type": "environment",
   "cookbook_versions": {
+    "ARR": "~> 0.0.0",
     "AccessControl": "= 2.0.7",
     "ActionableEventGateway": "~> 1.0.0",
     "ActiveMQDataBroker": "= 5.9.0",

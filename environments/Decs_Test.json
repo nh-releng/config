@@ -2,8 +2,7 @@
   "chef_type": "environment",
   "cookbook_versions": {
     "ActiveMQBase": "= 5.9.1",
-    "ActiveMQWebBroker": "= 5.9.0",
-    "Cygwin": "= 0.7.0"
+    "ActiveMQWebBroker": "= 5.9.0"
   },
   "default_attributes": {},
   "description": "",

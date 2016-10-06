@@ -1,11 +1,7 @@
 {
   "chef_type": "data_bag_item",
   "data_bag": "sshd_service",
-  "json_class": "Chef::DataBagItem",
-  "name": "data_bag_item_sshd_service_EncryptedItem",
-  "raw_data": {
-    "id": "EncryptedItem",
-    "password": "/MyqtBHZ+wFduoySnHX6SjWE5T+hRHeP5UW/LCNM+Yk=\n",
-    "user": "7ivoJM3uIiYXeR6S9TN3tFm7gI2UY4D44QYZfhwciJ8=\n"
-  }
+  "id": "EncryptedItem",
+  "password": "Welcome123",
+  "user": "Ctier"
 }

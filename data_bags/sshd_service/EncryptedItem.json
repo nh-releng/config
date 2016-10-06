@@ -2,6 +2,6 @@
   "chef_type": "data_bag_item",
   "data_bag": "sshd_service",
   "id": "EncryptedItem",
-  "password": "Welcome123",
-  "user": "Ctier"
+  "password": "FDbRbrcFiWpfjD+9xcUhReCChIN1jWVWDNhFu1qXjnI=\n",
+  "user": "ChOBospYqKDIikLQoTj3sA==\n"
 }
